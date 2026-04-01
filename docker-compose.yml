@@ -1,0 +1,14 @@
+services:
+  mariadb:
+    image: 'mariadb:latest'
+    container_name: atlantis_db_container
+    restart: always
+    environment:
+      - MARIADB_ROOT_PASSWORD=${DB_PASSWORD}
+      - MARIADB_DATABASE=${APP_DB_NAME}
+      - MARIADB_USER=${APP_DB_USER}
+      - MARIADB_PASSWORD=${APP_DB_PASS}
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./data/db:/var/lib/mysql
