@@ -25,12 +25,14 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String username;
 
+    @Column(nullable = false)
     @NotEmpty
     private String password;
 
+    @Column(nullable = false)
     @PastOrPresent
     private LocalDate createdDate;
 
