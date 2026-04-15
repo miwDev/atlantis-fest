@@ -1,40 +1,46 @@
 package com.msd.atlantis_fest.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Past;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
+@Table(name = "client")
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@SuperBuilder
 public class Client extends User {
 
-    @Column(unique = true, nullable = false)
-    @NotEmpty
-    //@ValidDNI #TODO
-    private String dniNumber;
+    @NotBlank
+    private String nombre;
 
-    @Column(nullable = false)
-    @NotEmpty
-    private String firstName;
+    @Column(unique = true)
+    private String dni;
 
-    @Column(nullable = false)
-    @NotEmpty
-    private String lastName;
+    @Column(name = "fecha_nacimiento")
+    private LocalDate fechaNacimiento;
 
-    @Column(nullable = false)
-    @Past
-    private LocalDate birthDate;
+    @Builder.Default
+    @OneToMany(mappedBy = "client")
+    private List<Purchase> purchases = new ArrayList<>();
 
+    @Builder.Default
+    @OneToMany(mappedBy = "client")
+    private List<Review> reviews = new ArrayList<>();
 
+    @Builder.Default
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "client_genre",
+            joinColumns = @JoinColumn(name = "client_id"),
+            inverseJoinColumns = @JoinColumn(name = "genre_id")
+    )
+    private List<Genre> favoriteGenres = new ArrayList<>();
 }

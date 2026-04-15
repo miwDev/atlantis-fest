@@ -4,26 +4,23 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Entity
-@Table(name = "role")
+@Table(name = "social_media")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
-public class Role {
+public class SocialMedia {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
-    private String name;
+    private String tipo;
+    private String url;
 
-    @Builder.Default
-    @OneToMany(mappedBy = "role")
-    private List<User> users = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "artista_id")
+    private Artist artist;
 }

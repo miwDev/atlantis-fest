@@ -1,24 +1,20 @@
 package com.msd.atlantis_fest.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.PastOrPresent;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.validation.constraints.Email;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
-import org.antlr.v4.runtime.misc.NotNull;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "users")
 @Inheritance(strategy = InheritanceType.JOINED)
 @Getter
 @Setter
-@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
+@SuperBuilder
 public class User {
 
     @Id
@@ -26,18 +22,19 @@ public class User {
     private Long id;
 
     @Column(unique = true, nullable = false)
+    @Email
+    private String email;
+
+    @Column(unique = true, nullable = false)
     private String username;
 
     @Column(nullable = false)
-    @NotEmpty
     private String password;
 
-    @Column(nullable = false)
-    @PastOrPresent
-    private LocalDate createdDate;
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "role_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "role_id")
     private Role role;
-
 }

@@ -1,24 +1,21 @@
 package com.msd.atlantis_fest.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.PastOrPresent;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
+@Table(name = "artist")
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@SuperBuilder
 public class Artist extends User {
-
 
     @Column(nullable = false)
     @NotBlank
@@ -31,6 +28,22 @@ public class Artist extends User {
     @Column(unique = true, nullable = false)
     private String artistName;
 
+    private String biography;
 
-    private String biografy;
+    @Builder.Default
+    @OneToMany(mappedBy = "artist")
+    private List<Concert> concerts = new ArrayList<>();
+
+    @Builder.Default
+    @OneToMany(mappedBy = "artist")
+    private List<SocialMedia> socialMediaLinks = new ArrayList<>();
+
+    @Builder.Default
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "artist_genre",
+            joinColumns = @JoinColumn(name = "artist_id"),
+            inverseJoinColumns = @JoinColumn(name = "genre_id")
+    )
+    private List<Genre> genres = new ArrayList<>();
 }
