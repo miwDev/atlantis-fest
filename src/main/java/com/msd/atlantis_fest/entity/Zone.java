@@ -21,27 +21,33 @@ public class Zone {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, length = 100)
     @NotBlank
     private String nombre;
 
+    @Column(length = 500)
     private String descripcion;
+
+    @Column(length = 50)
     private String tipo;
+
     private Double latitud;
+
     private Double longitud;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "festival_id")
+    @JoinColumn(name = "festival_id", nullable = false)
     private Festival festival;
 
     @Builder.Default
-    @OneToMany(mappedBy = "zone")
+    @OneToMany(mappedBy = "zone", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Concert> concerts = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "zone")
+    @OneToMany(mappedBy = "zone", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Foodtruck> foodtrucks = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "zone")
+    @OneToMany(mappedBy = "zone", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Shift> shifts = new ArrayList<>();
 }

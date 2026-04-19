@@ -5,6 +5,7 @@ import com.msd.atlantis_fest.dto.output.ReviewOutputDTO;
 import com.msd.atlantis_fest.entity.Review;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
 public interface ReviewMapper {
@@ -14,4 +15,8 @@ public interface ReviewMapper {
 
     @Mapping(source = "client.username", target = "clientUsername")
     ReviewOutputDTO toOutputDTO(Review entity);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "client", ignore = true)
+    void updateFromDTO(ReviewInputDTO inputDTO, @MappingTarget Review entity);
 }

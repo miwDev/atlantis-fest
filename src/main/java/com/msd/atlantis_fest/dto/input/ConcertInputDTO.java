@@ -1,5 +1,6 @@
 package com.msd.atlantis_fest.dto.input;
 
+import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
@@ -8,15 +9,21 @@ import java.time.LocalTime;
 
 @Data
 public class ConcertInputDTO {
-    @NotNull
+    @NotNull(message = "La fecha no puede ser nula")
+    @FutureOrPresent(message = "La fecha debe ser en el presente o en el futuro")
     private LocalDate fecha;
-    @NotNull
+
+    @NotNull(message = "La hora de inicio no puede ser nula")
     private LocalTime horaInicio;
-    @NotNull
+
+    @NotNull(message = "La hora de fin no puede ser nula")
     private LocalTime horaFin;
+
     private Integer duracionEstimada;
-    @NotNull
+
+    @NotNull(message = "El ID del artista no puede ser nulo")
     private Long artistId;
-    @NotNull
+
+    @NotNull(message = "El ID de la zona no puede ser nulo")
     private Long zoneId;
 }

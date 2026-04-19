@@ -3,6 +3,7 @@ package com.msd.atlantis_fest.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -19,16 +20,17 @@ public class Invoice {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "numero_factura", unique = true)
+    @Column(name = "numero_factura", unique = true, nullable = false, length = 20)
     private String numeroFactura;
 
-    @Column(name = "fecha_emision")
+    @Column(name = "fecha_emision", updatable = false)
+    @CreationTimestamp
     private LocalDateTime fechaEmision;
 
-    @Column(name = "datos_fiscales")
+    @Column(name = "datos_fiscales", nullable = false, length = 500)
     private String datosFiscales;
 
     @OneToOne
-    @JoinColumn(name = "payment_id")
+    @JoinColumn(name = "payment_id", nullable = false)
     private Payment payment;
 }

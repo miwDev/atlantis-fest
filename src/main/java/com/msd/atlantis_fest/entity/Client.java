@@ -18,21 +18,22 @@ import java.util.List;
 @SuperBuilder
 public class Client extends User {
 
+    @Column(nullable = false, length = 100)
     @NotBlank
     private String nombre;
 
-    @Column(unique = true)
+    @Column(unique = true, length = 9)
     private String dni;
 
     @Column(name = "fecha_nacimiento")
     private LocalDate fechaNacimiento;
 
     @Builder.Default
-    @OneToMany(mappedBy = "client")
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Purchase> purchases = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "client")
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Review> reviews = new ArrayList<>();
 
     @Builder.Default
