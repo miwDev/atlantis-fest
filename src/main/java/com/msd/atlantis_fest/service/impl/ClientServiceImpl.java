@@ -1,0 +1,61 @@
+package com.msd.atlantis_fest.service.impl;
+
+import com.msd.atlantis_fest.dto.input.ClientInputDTO;
+import com.msd.atlantis_fest.dto.output.ClientOutputDTO;
+import com.msd.atlantis_fest.entity.Client;
+import com.msd.atlantis_fest.mapper.ClientMapper;
+import com.msd.atlantis_fest.repository.ClientRepository;
+import com.msd.atlantis_fest.service.ClientService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+@RequiredArgsConstructor
+public class ClientServiceImpl implements ClientService {
+
+    private final ClientRepository clientRepository;
+    private final ClientMapper clientMapper;
+
+    @Override
+    public List<ClientOutputDTO> obtenerTodos() {
+        return clientRepository.findAll().stream()
+                .map(clientMapper::toOutputDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public ClientOutputDTO obtenerPorId(Long id) {
+        return clientRepository.findById(id)
+                .map(clientMapper::toOutputDTO)
+                .orElse(null);
+    }
+
+    @Override
+    public ClientOutputDTO crear(ClientInputDTO inputDTO) {
+        Client client = clientMapper.toEntity(inputDTO);
+        return clientMapper.toOutputDTO(clientRepository.save(client));
+    }
+
+    @Override
+    public ClientOutputDTO actualizar(Long id, ClientInputDTO inputDTO) {
+        return clientRepository.findById(id)
+                .map(client -> {
+                    clientMapper.updateFromDTO(inputDTO, client);
+                    return clientMapper.toOutputDTO(clientRepository.save(client));
+                })
+                .orElse(null);
+    }
+
+    @Override
+    public boolean eliminar(Long id) {
+        boolean eliminado = false;
+        if (clientRepository.existsById(id)) {
+            clientRepository.deleteById(id);
+            eliminado = true;
+        }
+        return eliminado;
+    }
+}
