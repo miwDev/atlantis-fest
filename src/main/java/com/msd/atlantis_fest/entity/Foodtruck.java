@@ -10,18 +10,18 @@ import lombok.experimental.SuperBuilder;
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @SuperBuilder
 public class Foodtruck extends User {
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 100)
     @NotBlank(message = "El nombre del foodtruck es obligatorio")
     private String nombre;
 
-    @Column(name = "menu_pdf_url")
+    @Column(name = "menu_pdf_url", length = 255)
     private String menuPdfUrl;
 
-    @Column(name = "tipo_comida")
+    @Column(name = "tipo_comida", length = 100)
     @NotBlank(message = "El tipo de comida es obligatorio")
     private String tipoComida;
 
-    @Column(name = "imagen_portada_url")
+    @Column(name = "imagen_portada_url", length = 255)
     private String imagenPortadaUrl;
 
     @Column(name = "esta_abierto", nullable = false)

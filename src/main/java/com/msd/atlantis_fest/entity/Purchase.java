@@ -3,6 +3,7 @@ package com.msd.atlantis_fest.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -19,21 +20,22 @@ public class Purchase {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "fecha_compra")
+    @Column(name = "fecha_compra", updatable = false)
+    @CreationTimestamp
     private LocalDateTime fechaCompra;
 
-    @Column(name = "precio_final")
+    @Column(name = "precio_final", nullable = false)
     private Double precioFinal;
 
     @Column(name = "descuento_aplicado")
     private Double descuentoAplicado;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "client_id")
+    @JoinColumn(name = "client_id", nullable = false)
     private Client client;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ticket_type_id")
+    @JoinColumn(name = "ticket_type_id", nullable = false)
     private TicketType ticketType;
 
     @OneToOne(mappedBy = "purchase", cascade = CascadeType.ALL)

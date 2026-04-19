@@ -20,22 +20,23 @@ public class Concert {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private LocalDate fecha;
 
-    @Column(name = "hora_inicio")
+    @Column(name = "hora_inicio", nullable = false)
     private LocalTime horaInicio;
 
-    @Column(name = "hora_fin")
+    @Column(name = "hora_fin", nullable = false)
     private LocalTime horaFin;
 
     @Column(name = "duracion_estimada")
     private Integer duracionEstimada;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "artista_id")
+    @JoinColumn(name = "artista_id", nullable = false)
     private Artist artist;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "zona_id")
+    @JoinColumn(name = "zona_id", nullable = false)
     private Zone zone;
 }
