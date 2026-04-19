@@ -17,25 +17,26 @@ import java.util.List;
 @SuperBuilder
 public class Artist extends User {
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 100)
     @NotBlank
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 100)
     @NotBlank
     private String surname;
 
-    @Column(unique = true, nullable = false)
+    @Column(unique = true, nullable = false, length = 100)
     private String artistName;
 
+    @Lob
     private String biography;
 
     @Builder.Default
-    @OneToMany(mappedBy = "artist")
+    @OneToMany(mappedBy = "artist", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Concert> concerts = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "artist")
+    @OneToMany(mappedBy = "artist", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SocialMedia> socialMediaLinks = new ArrayList<>();
 
     @Builder.Default

@@ -18,18 +18,20 @@ public class TicketType {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, length = 100)
     @NotBlank
     private String tipo;
 
-    @Column(name = "precio_base")
+    @Column(name = "precio_base", nullable = false)
     private Double precioBase;
 
+    @Column(length = 500)
     private String descripcion;
 
-    @Column(name = "max_disponible")
+    @Column(name = "max_disponible", nullable = false)
     private Integer maxDisponible;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "festival_id")
+    @JoinColumn(name = "festival_id", nullable = false)
     private Festival festival;
 }

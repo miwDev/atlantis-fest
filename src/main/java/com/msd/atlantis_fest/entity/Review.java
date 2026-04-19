@@ -17,16 +17,19 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "target_type")
+    @Column(name = "target_type", nullable = false, length = 50)
     private String targetType; // Ej: "ARTIST" o "FOODTRUCK"
 
-    @Column(name = "target_id")
+    @Column(name = "target_id", nullable = false)
     private Long targetId;
 
+    @Column(nullable = false)
     private Integer stars;
+
+    @Column(length = 1000)
     private String comment;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "client_id")
+    @JoinColumn(name = "client_id", nullable = false)
     private Client client;
 }
