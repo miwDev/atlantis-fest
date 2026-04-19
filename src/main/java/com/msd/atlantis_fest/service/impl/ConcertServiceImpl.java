@@ -58,4 +58,11 @@ public class ConcertServiceImpl implements ConcertService {
         }
         return eliminado;
     }
+
+    @Override
+    public List<ConcertOutputDto> obtenerConciertosPorArtista(Long artistId) {
+        return concertRepository.findByArtistId(artistId).stream()
+                .map(concertMapper::toOutputDTO)
+                .collect(Collectors.toList());
+    }
 }

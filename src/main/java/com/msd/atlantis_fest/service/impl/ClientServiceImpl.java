@@ -7,6 +7,7 @@ import com.msd.atlantis_fest.mapper.ClientMapper;
 import com.msd.atlantis_fest.repository.ClientRepository;
 import com.msd.atlantis_fest.service.ClientService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +19,7 @@ public class ClientServiceImpl implements ClientService {
 
     private final ClientRepository clientRepository;
     private final ClientMapper clientMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public List<ClientOutputDTO> obtenerTodos() {
@@ -36,6 +38,7 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public ClientOutputDTO crear(ClientInputDTO inputDTO) {
         Client client = clientMapper.toEntity(inputDTO);
+        client.setPassword(passwordEncoder.encode(inputDTO.getPassword()));
         return clientMapper.toOutputDTO(clientRepository.save(client));
     }
 
@@ -44,6 +47,9 @@ public class ClientServiceImpl implements ClientService {
         return clientRepository.findById(id)
                 .map(client -> {
                     clientMapper.updateFromDTO(inputDTO, client);
+                    if (inputDTO.getPassword() != null && !inputDTO.getPassword().isEmpty()) {
+                        client.setPassword(passwordEncoder.encode(inputDTO.getPassword()));
+                    }
                     return clientMapper.toOutputDTO(clientRepository.save(client));
                 })
                 .orElse(null);

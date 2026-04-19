@@ -58,4 +58,11 @@ public class ZoneServiceImpl implements ZoneService {
         }
         return eliminado;
     }
+
+    @Override
+    public List<ZoneOutputDTO> obtenerZonasPorFestival(Long festivalId) {
+        return zoneRepository.findByFestivalId(festivalId).stream()
+                .map(zoneMapper::toOutputDTO)
+                .collect(Collectors.toList());
+    }
 }

@@ -7,6 +7,7 @@ import com.msd.atlantis_fest.mapper.ArtistMapper;
 import com.msd.atlantis_fest.repository.ArtistRepository;
 import com.msd.atlantis_fest.service.ArtistService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +19,7 @@ public class ArtistServiceImpl implements ArtistService {
 
     private final ArtistRepository artistRepository;
     private final ArtistMapper artistMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public List<ArtistOutputDTO> obtenerTodos() {
@@ -36,6 +38,7 @@ public class ArtistServiceImpl implements ArtistService {
     @Override
     public ArtistOutputDTO crear(ArtistInputDTO inputDTO) {
         Artist artist = artistMapper.toEntity(inputDTO);
+        artist.setPassword(passwordEncoder.encode(inputDTO.getPassword()));
         return artistMapper.toOutputDTO(artistRepository.save(artist));
     }
 
@@ -44,6 +47,9 @@ public class ArtistServiceImpl implements ArtistService {
         return artistRepository.findById(id)
                 .map(artist -> {
                     artistMapper.updateFromDTO(inputDTO, artist);
+                    if (inputDTO.getPassword() != null && !inputDTO.getPassword().isEmpty()) {
+                        artist.setPassword(passwordEncoder.encode(inputDTO.getPassword()));
+                    }
                     return artistMapper.toOutputDTO(artistRepository.save(artist));
                 })
                 .orElse(null);

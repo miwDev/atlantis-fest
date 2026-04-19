@@ -7,6 +7,7 @@ import com.msd.atlantis_fest.mapper.StaffMapper;
 import com.msd.atlantis_fest.repository.StaffRepository;
 import com.msd.atlantis_fest.service.StaffService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +19,7 @@ public class StaffServiceImpl implements StaffService {
 
     private final StaffRepository staffRepository;
     private final StaffMapper staffMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public List<StaffOutputDTO> obtenerTodos() {
@@ -36,6 +38,7 @@ public class StaffServiceImpl implements StaffService {
     @Override
     public StaffOutputDTO crear(StaffInputDTO inputDTO) {
         Staff staff = staffMapper.toEntity(inputDTO);
+        staff.setPassword(passwordEncoder.encode(inputDTO.getPassword()));
         return staffMapper.toOutputDTO(staffRepository.save(staff));
     }
 
@@ -44,6 +47,9 @@ public class StaffServiceImpl implements StaffService {
         return staffRepository.findById(id)
                 .map(staff -> {
                     staffMapper.updateFromDTO(inputDTO, staff);
+                    if (inputDTO.getPassword() != null && !inputDTO.getPassword().isEmpty()) {
+                        staff.setPassword(passwordEncoder.encode(inputDTO.getPassword()));
+                    }
                     return staffMapper.toOutputDTO(staffRepository.save(staff));
                 })
                 .orElse(null);

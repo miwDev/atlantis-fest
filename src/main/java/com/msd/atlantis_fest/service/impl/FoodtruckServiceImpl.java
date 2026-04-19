@@ -7,6 +7,7 @@ import com.msd.atlantis_fest.mapper.FoodtruckMapper;
 import com.msd.atlantis_fest.repository.FoodtruckRepository;
 import com.msd.atlantis_fest.service.FoodtruckService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +19,7 @@ public class FoodtruckServiceImpl implements FoodtruckService {
 
     private final FoodtruckRepository foodtruckRepository;
     private final FoodtruckMapper foodtruckMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public List<FoodtruckOutputDTO> obtenerTodos() {
@@ -36,6 +38,7 @@ public class FoodtruckServiceImpl implements FoodtruckService {
     @Override
     public FoodtruckOutputDTO crear(FoodtruckInputDTO inputDTO) {
         Foodtruck foodtruck = foodtruckMapper.toEntity(inputDTO);
+        foodtruck.setPassword(passwordEncoder.encode(inputDTO.getPassword()));
         return foodtruckMapper.toOutputDTO(foodtruckRepository.save(foodtruck));
     }
 
@@ -44,6 +47,9 @@ public class FoodtruckServiceImpl implements FoodtruckService {
         return foodtruckRepository.findById(id)
                 .map(foodtruck -> {
                     foodtruckMapper.updateFromDTO(inputDTO, foodtruck);
+                    if (inputDTO.getPassword() != null && !inputDTO.getPassword().isEmpty()) {
+                        foodtruck.setPassword(passwordEncoder.encode(inputDTO.getPassword()));
+                    }
                     return foodtruckMapper.toOutputDTO(foodtruckRepository.save(foodtruck));
                 })
                 .orElse(null);

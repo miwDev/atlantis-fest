@@ -1,0 +1,46 @@
+package com.msd.atlantis_fest.api;
+
+import com.msd.atlantis_fest.dto.input.GenreInputDTO;
+import com.msd.atlantis_fest.dto.output.GenreOutputDTO;
+import com.msd.atlantis_fest.service.GenreService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/generos")
+@RequiredArgsConstructor
+public class GenreController {
+
+    private final GenreService genreService;
+
+    @GetMapping
+    public ResponseEntity<List<GenreOutputDTO>> obtenerGeneros() {
+        return ResponseEntity.ok(genreService.obtenerTodos());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<GenreOutputDTO> obtenerGeneroPorId(@PathVariable Long id) {
+        GenreOutputDTO genre = genreService.obtenerPorId(id);
+        return genre != null ? ResponseEntity.ok(genre) : ResponseEntity.notFound().build();
+    }
+
+    @PostMapping
+    public ResponseEntity<GenreOutputDTO> crearGenero(@RequestBody GenreInputDTO inputDTO) {
+        return ResponseEntity.status(201).body(genreService.crear(inputDTO));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<GenreOutputDTO> actualizarGenero(@PathVariable Long id, @RequestBody GenreInputDTO inputDTO) {
+        GenreOutputDTO genre = genreService.actualizar(id, inputDTO);
+        return genre != null ? ResponseEntity.ok(genre) : ResponseEntity.notFound().build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminarGenero(@PathVariable Long id) {
+        boolean eliminado = genreService.eliminar(id);
+        return eliminado ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
+    }
+}

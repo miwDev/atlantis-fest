@@ -11,4 +11,5 @@ public interface ZoneService {
     ZoneOutputDTO crear(ZoneInputDTO inputDTO);
     ZoneOutputDTO actualizar(Long id, ZoneInputDTO inputDTO);
     boolean eliminar(Long id);
+    List<ZoneOutputDTO> obtenerZonasPorFestival(Long festivalId);
 }

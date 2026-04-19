@@ -11,4 +11,5 @@ public interface ConcertService {
     ConcertOutputDto crear(ConcertInputDTO inputDTO);
     ConcertOutputDto actualizar(Long id, ConcertInputDTO inputDTO);
     boolean eliminar(Long id);
+    List<ConcertOutputDto> obtenerConciertosPorArtista(Long artistId);
 }
