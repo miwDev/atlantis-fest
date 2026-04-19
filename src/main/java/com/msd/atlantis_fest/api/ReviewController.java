@@ -3,6 +3,7 @@ package com.msd.atlantis_fest.api;
 import com.msd.atlantis_fest.dto.input.ReviewInputDTO;
 import com.msd.atlantis_fest.dto.output.ReviewOutputDTO;
 import com.msd.atlantis_fest.service.ReviewService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,12 +29,12 @@ public class ReviewController {
     }
 
     @PostMapping
-    public ResponseEntity<ReviewOutputDTO> crearResena(@RequestBody ReviewInputDTO inputDTO) {
+    public ResponseEntity<ReviewOutputDTO> crearResena(@Valid @RequestBody ReviewInputDTO inputDTO) {
         return ResponseEntity.status(201).body(reviewService.crear(inputDTO));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ReviewOutputDTO> actualizarResena(@PathVariable Long id, @RequestBody ReviewInputDTO inputDTO) {
+    public ResponseEntity<ReviewOutputDTO> actualizarResena(@PathVariable Long id, @Valid @RequestBody ReviewInputDTO inputDTO) {
         ReviewOutputDTO review = reviewService.actualizar(id, inputDTO);
         return review != null ? ResponseEntity.ok(review) : ResponseEntity.notFound().build();
     }

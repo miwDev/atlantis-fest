@@ -3,6 +3,7 @@ package com.msd.atlantis_fest.api;
 import com.msd.atlantis_fest.dto.input.SocialMediaInputDTO;
 import com.msd.atlantis_fest.dto.output.SocialMediaOutputDTO;
 import com.msd.atlantis_fest.service.SocialMediaService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,12 +29,12 @@ public class SocialMediaController {
     }
 
     @PostMapping
-    public ResponseEntity<SocialMediaOutputDTO> crearRedSocial(@RequestBody SocialMediaInputDTO inputDTO) {
+    public ResponseEntity<SocialMediaOutputDTO> crearRedSocial(@Valid @RequestBody SocialMediaInputDTO inputDTO) {
         return ResponseEntity.status(201).body(socialMediaService.crear(inputDTO));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<SocialMediaOutputDTO> actualizarRedSocial(@PathVariable Long id, @RequestBody SocialMediaInputDTO inputDTO) {
+    public ResponseEntity<SocialMediaOutputDTO> actualizarRedSocial(@PathVariable Long id, @Valid @RequestBody SocialMediaInputDTO inputDTO) {
         SocialMediaOutputDTO socialMedia = socialMediaService.actualizar(id, inputDTO);
         return socialMedia != null ? ResponseEntity.ok(socialMedia) : ResponseEntity.notFound().build();
     }

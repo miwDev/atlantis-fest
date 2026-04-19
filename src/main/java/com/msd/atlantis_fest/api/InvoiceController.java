@@ -3,6 +3,7 @@ package com.msd.atlantis_fest.api;
 import com.msd.atlantis_fest.dto.input.InvoiceInputDTO;
 import com.msd.atlantis_fest.dto.output.InvoiceOutputDTO;
 import com.msd.atlantis_fest.service.InvoiceService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,12 +29,12 @@ public class InvoiceController {
     }
 
     @PostMapping
-    public ResponseEntity<InvoiceOutputDTO> crearFactura(@RequestBody InvoiceInputDTO inputDTO) {
+    public ResponseEntity<InvoiceOutputDTO> crearFactura(@Valid @RequestBody InvoiceInputDTO inputDTO) {
         return ResponseEntity.status(201).body(invoiceService.crear(inputDTO));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<InvoiceOutputDTO> actualizarFactura(@PathVariable Long id, @RequestBody InvoiceInputDTO inputDTO) {
+    public ResponseEntity<InvoiceOutputDTO> actualizarFactura(@PathVariable Long id, @Valid @RequestBody InvoiceInputDTO inputDTO) {
         InvoiceOutputDTO invoice = invoiceService.actualizar(id, inputDTO);
         return invoice != null ? ResponseEntity.ok(invoice) : ResponseEntity.notFound().build();
     }

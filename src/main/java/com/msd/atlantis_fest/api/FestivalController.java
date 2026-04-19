@@ -3,6 +3,7 @@ package com.msd.atlantis_fest.api;
 import com.msd.atlantis_fest.dto.input.FestivalInputDTO;
 import com.msd.atlantis_fest.dto.output.FestivalOutputDTO;
 import com.msd.atlantis_fest.service.FestivalService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,12 +29,12 @@ public class FestivalController {
     }
 
     @PostMapping
-    public ResponseEntity<FestivalOutputDTO> crearFestival(@RequestBody FestivalInputDTO inputDTO) {
+    public ResponseEntity<FestivalOutputDTO> crearFestival(@Valid @RequestBody FestivalInputDTO inputDTO) {
         return ResponseEntity.status(201).body(festivalService.crear(inputDTO));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<FestivalOutputDTO> actualizarFestival(@PathVariable Long id, @RequestBody FestivalInputDTO inputDTO) {
+    public ResponseEntity<FestivalOutputDTO> actualizarFestival(@PathVariable Long id, @Valid @RequestBody FestivalInputDTO inputDTO) {
         FestivalOutputDTO festival = festivalService.actualizar(id, inputDTO);
         return festival != null ? ResponseEntity.ok(festival) : ResponseEntity.notFound().build();
     }

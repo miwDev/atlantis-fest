@@ -3,6 +3,7 @@ package com.msd.atlantis_fest.api;
 import com.msd.atlantis_fest.dto.input.GenreInputDTO;
 import com.msd.atlantis_fest.dto.output.GenreOutputDTO;
 import com.msd.atlantis_fest.service.GenreService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,12 +29,12 @@ public class GenreController {
     }
 
     @PostMapping
-    public ResponseEntity<GenreOutputDTO> crearGenero(@RequestBody GenreInputDTO inputDTO) {
+    public ResponseEntity<GenreOutputDTO> crearGenero(@Valid @RequestBody GenreInputDTO inputDTO) {
         return ResponseEntity.status(201).body(genreService.crear(inputDTO));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<GenreOutputDTO> actualizarGenero(@PathVariable Long id, @RequestBody GenreInputDTO inputDTO) {
+    public ResponseEntity<GenreOutputDTO> actualizarGenero(@PathVariable Long id, @Valid @RequestBody GenreInputDTO inputDTO) {
         GenreOutputDTO genre = genreService.actualizar(id, inputDTO);
         return genre != null ? ResponseEntity.ok(genre) : ResponseEntity.notFound().build();
     }

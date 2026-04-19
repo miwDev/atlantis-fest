@@ -3,6 +3,7 @@ package com.msd.atlantis_fest.api;
 import com.msd.atlantis_fest.dto.input.StaffInputDTO;
 import com.msd.atlantis_fest.dto.output.StaffOutputDTO;
 import com.msd.atlantis_fest.service.StaffService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,12 +29,12 @@ public class StaffController {
     }
 
     @PostMapping
-    public ResponseEntity<StaffOutputDTO> crearStaff(@RequestBody StaffInputDTO inputDTO) {
+    public ResponseEntity<StaffOutputDTO> crearStaff(@Valid @RequestBody StaffInputDTO inputDTO) {
         return ResponseEntity.status(201).body(staffService.crear(inputDTO));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<StaffOutputDTO> actualizarStaff(@PathVariable Long id, @RequestBody StaffInputDTO inputDTO) {
+    public ResponseEntity<StaffOutputDTO> actualizarStaff(@PathVariable Long id, @Valid @RequestBody StaffInputDTO inputDTO) {
         StaffOutputDTO staff = staffService.actualizar(id, inputDTO);
         return staff != null ? ResponseEntity.ok(staff) : ResponseEntity.notFound().build();
     }

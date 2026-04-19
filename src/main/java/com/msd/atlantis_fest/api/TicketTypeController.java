@@ -3,6 +3,7 @@ package com.msd.atlantis_fest.api;
 import com.msd.atlantis_fest.dto.input.TicketTypeInputDTO;
 import com.msd.atlantis_fest.dto.output.TicketTypeOutputDTO;
 import com.msd.atlantis_fest.service.TicketTypeService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,12 +29,12 @@ public class TicketTypeController {
     }
 
     @PostMapping
-    public ResponseEntity<TicketTypeOutputDTO> crearTipoTicket(@RequestBody TicketTypeInputDTO inputDTO) {
+    public ResponseEntity<TicketTypeOutputDTO> crearTipoTicket(@Valid @RequestBody TicketTypeInputDTO inputDTO) {
         return ResponseEntity.status(201).body(ticketTypeService.crear(inputDTO));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TicketTypeOutputDTO> actualizarTipoTicket(@PathVariable Long id, @RequestBody TicketTypeInputDTO inputDTO) {
+    public ResponseEntity<TicketTypeOutputDTO> actualizarTipoTicket(@PathVariable Long id, @Valid @RequestBody TicketTypeInputDTO inputDTO) {
         TicketTypeOutputDTO ticketType = ticketTypeService.actualizar(id, inputDTO);
         return ticketType != null ? ResponseEntity.ok(ticketType) : ResponseEntity.notFound().build();
     }

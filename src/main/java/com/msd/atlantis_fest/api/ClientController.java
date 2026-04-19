@@ -3,6 +3,7 @@ package com.msd.atlantis_fest.api;
 import com.msd.atlantis_fest.dto.input.ClientInputDTO;
 import com.msd.atlantis_fest.dto.output.ClientOutputDTO;
 import com.msd.atlantis_fest.service.ClientService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,12 +29,12 @@ public class ClientController {
     }
 
     @PostMapping
-    public ResponseEntity<ClientOutputDTO> crearCliente(@RequestBody ClientInputDTO inputDTO) {
+    public ResponseEntity<ClientOutputDTO> crearCliente(@Valid @RequestBody ClientInputDTO inputDTO) {
         return ResponseEntity.status(201).body(clientService.crear(inputDTO));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ClientOutputDTO> actualizarCliente(@PathVariable Long id, @RequestBody ClientInputDTO inputDTO) {
+    public ResponseEntity<ClientOutputDTO> actualizarCliente(@PathVariable Long id, @Valid @RequestBody ClientInputDTO inputDTO) {
         ClientOutputDTO client = clientService.actualizar(id, inputDTO);
         return client != null ? ResponseEntity.ok(client) : ResponseEntity.notFound().build();
     }

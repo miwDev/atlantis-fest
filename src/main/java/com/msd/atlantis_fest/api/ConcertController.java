@@ -3,6 +3,7 @@ package com.msd.atlantis_fest.api;
 import com.msd.atlantis_fest.dto.input.ConcertInputDTO;
 import com.msd.atlantis_fest.dto.output.ConcertOutputDto;
 import com.msd.atlantis_fest.service.ConcertService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,12 +29,12 @@ public class ConcertController {
     }
 
     @PostMapping
-    public ResponseEntity<ConcertOutputDto> crearConcierto(@RequestBody ConcertInputDTO inputDTO) {
+    public ResponseEntity<ConcertOutputDto> crearConcierto(@Valid @RequestBody ConcertInputDTO inputDTO) {
         return ResponseEntity.status(201).body(concertService.crear(inputDTO));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ConcertOutputDto> actualizarConcierto(@PathVariable Long id, @RequestBody ConcertInputDTO inputDTO) {
+    public ResponseEntity<ConcertOutputDto> actualizarConcierto(@PathVariable Long id, @Valid @RequestBody ConcertInputDTO inputDTO) {
         ConcertOutputDto concert = concertService.actualizar(id, inputDTO);
         return concert != null ? ResponseEntity.ok(concert) : ResponseEntity.notFound().build();
     }

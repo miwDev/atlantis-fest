@@ -3,6 +3,7 @@ package com.msd.atlantis_fest.api;
 import com.msd.atlantis_fest.dto.input.PurchaseInputDTO;
 import com.msd.atlantis_fest.dto.output.PurchaseOutputDTO;
 import com.msd.atlantis_fest.service.PurchaseService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,12 +29,12 @@ public class PurchaseController {
     }
 
     @PostMapping
-    public ResponseEntity<PurchaseOutputDTO> crearCompra(@RequestBody PurchaseInputDTO inputDTO) {
+    public ResponseEntity<PurchaseOutputDTO> crearCompra(@Valid @RequestBody PurchaseInputDTO inputDTO) {
         return ResponseEntity.status(201).body(purchaseService.crear(inputDTO));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PurchaseOutputDTO> actualizarCompra(@PathVariable Long id, @RequestBody PurchaseInputDTO inputDTO) {
+    public ResponseEntity<PurchaseOutputDTO> actualizarCompra(@PathVariable Long id, @Valid @RequestBody PurchaseInputDTO inputDTO) {
         PurchaseOutputDTO purchase = purchaseService.actualizar(id, inputDTO);
         return purchase != null ? ResponseEntity.ok(purchase) : ResponseEntity.notFound().build();
     }

@@ -3,6 +3,7 @@ package com.msd.atlantis_fest.api;
 import com.msd.atlantis_fest.dto.input.FoodtruckInputDTO;
 import com.msd.atlantis_fest.dto.output.FoodtruckOutputDTO;
 import com.msd.atlantis_fest.service.FoodtruckService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,12 +29,12 @@ public class FoodtruckController {
     }
 
     @PostMapping
-    public ResponseEntity<FoodtruckOutputDTO> crearFoodtruck(@RequestBody FoodtruckInputDTO inputDTO) {
+    public ResponseEntity<FoodtruckOutputDTO> crearFoodtruck(@Valid @RequestBody FoodtruckInputDTO inputDTO) {
         return ResponseEntity.status(201).body(foodtruckService.crear(inputDTO));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<FoodtruckOutputDTO> actualizarFoodtruck(@PathVariable Long id, @RequestBody FoodtruckInputDTO inputDTO) {
+    public ResponseEntity<FoodtruckOutputDTO> actualizarFoodtruck(@PathVariable Long id, @Valid @RequestBody FoodtruckInputDTO inputDTO) {
         FoodtruckOutputDTO foodtruck = foodtruckService.actualizar(id, inputDTO);
         return foodtruck != null ? ResponseEntity.ok(foodtruck) : ResponseEntity.notFound().build();
     }
