@@ -43,4 +43,9 @@ public class ConcertController {
         boolean eliminado = concertService.eliminar(id);
         return eliminado ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
+
+    @GetMapping("/artista/{artistId}")
+    public ResponseEntity<List<ConcertOutputDto>> obtenerConciertosPorArtista(@PathVariable Long artistId) {
+        return ResponseEntity.ok(concertService.obtenerConciertosPorArtista(artistId));
+    }
 }

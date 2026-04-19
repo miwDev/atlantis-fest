@@ -43,4 +43,9 @@ public class ZoneController {
         boolean eliminado = zoneService.eliminar(id);
         return eliminado ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
+
+    @GetMapping("/festival/{festivalId}")
+    public ResponseEntity<List<ZoneOutputDTO>> obtenerZonasPorFestival(@PathVariable Long festivalId) {
+        return ResponseEntity.ok(zoneService.obtenerZonasPorFestival(festivalId));
+    }
 }
