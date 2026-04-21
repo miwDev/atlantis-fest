@@ -12,11 +12,6 @@ import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface ClientMapper {
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "createdAt", ignore = true)
-    @Mapping(target = "role", ignore = true)
-    @Mapping(target = "purchases", ignore = true)
-    @Mapping(target = "reviews", ignore = true)
     @Mapping(source = "favoriteGenreIds", target = "favoriteGenres")
     Client toEntity(ClientInputDTO inputDTO);
 

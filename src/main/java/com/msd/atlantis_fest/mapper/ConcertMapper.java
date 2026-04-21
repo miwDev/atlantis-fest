@@ -10,7 +10,6 @@ import org.mapstruct.Mapping;
 public interface ConcertMapper {
     @Mapping(source = "artistId", target = "artist.id")
     @Mapping(source = "zoneId", target = "zone.id")
-    @Mapping(target = "id", ignore = true)
     Concert toEntity(ConcertInputDTO inputDTO);
 
     @Mapping(source = "artist.artistName", target = "artistName")

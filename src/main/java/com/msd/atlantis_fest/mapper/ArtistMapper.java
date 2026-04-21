@@ -12,11 +12,6 @@ import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface ArtistMapper {
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "createdAt", ignore = true)
-    @Mapping(target = "role", ignore = true)
-    @Mapping(target = "concerts", ignore = true)
-    @Mapping(target = "socialMediaLinks", ignore = true)
     @Mapping(source = "genreIds", target = "genres")
     Artist toEntity(ArtistInputDTO inputDTO);
 
