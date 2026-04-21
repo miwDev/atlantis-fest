@@ -7,10 +7,9 @@ import com.msd.atlantis_fest.mapper.ConcertMapper;
 import com.msd.atlantis_fest.repository.ConcertRepository;
 import com.msd.atlantis_fest.service.ConcertService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -20,10 +19,9 @@ public class ConcertServiceImpl implements ConcertService {
     private final ConcertMapper concertMapper;
 
     @Override
-    public List<ConcertOutputDto> obtenerTodos() {
-        return concertRepository.findAll().stream()
-                .map(concertMapper::toOutputDTO)
-                .collect(Collectors.toList());
+    public Page<ConcertOutputDto> obtenerTodos(Pageable pageable) {
+        return concertRepository.findAll(pageable)
+                .map(concertMapper::toOutputDTO);
     }
 
     @Override
@@ -60,9 +58,8 @@ public class ConcertServiceImpl implements ConcertService {
     }
 
     @Override
-    public List<ConcertOutputDto> obtenerConciertosPorArtista(Long artistId) {
-        return concertRepository.findByArtistId(artistId).stream()
-                .map(concertMapper::toOutputDTO)
-                .collect(Collectors.toList());
+    public Page<ConcertOutputDto> obtenerConciertosPorArtista(Long artistId, Pageable pageable) {
+        return concertRepository.findByArtistId(artistId, pageable)
+                .map(concertMapper::toOutputDTO);
     }
 }

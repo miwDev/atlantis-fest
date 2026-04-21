@@ -7,10 +7,9 @@ import com.msd.atlantis_fest.mapper.TicketTypeMapper;
 import com.msd.atlantis_fest.repository.TicketTypeRepository;
 import com.msd.atlantis_fest.service.TicketTypeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -20,10 +19,9 @@ public class TicketTypeServiceImpl implements TicketTypeService {
     private final TicketTypeMapper ticketTypeMapper;
 
     @Override
-    public List<TicketTypeOutputDTO> obtenerTodos() {
-        return ticketTypeRepository.findAll().stream()
-                .map(ticketTypeMapper::toOutputDTO)
-                .collect(Collectors.toList());
+    public Page<TicketTypeOutputDTO> obtenerTodos(Pageable pageable) {
+        return ticketTypeRepository.findAll(pageable)
+                .map(ticketTypeMapper::toOutputDTO);
     }
 
     @Override

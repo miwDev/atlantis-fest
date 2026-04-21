@@ -7,11 +7,10 @@ import com.msd.atlantis_fest.mapper.StaffMapper;
 import com.msd.atlantis_fest.repository.StaffRepository;
 import com.msd.atlantis_fest.service.StaffService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -22,10 +21,9 @@ public class StaffServiceImpl implements StaffService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public List<StaffOutputDTO> obtenerTodos() {
-        return staffRepository.findAll().stream()
-                .map(staffMapper::toOutputDTO)
-                .collect(Collectors.toList());
+    public Page<StaffOutputDTO> obtenerTodos(Pageable pageable) {
+        return staffRepository.findAll(pageable)
+                .map(staffMapper::toOutputDTO);
     }
 
     @Override

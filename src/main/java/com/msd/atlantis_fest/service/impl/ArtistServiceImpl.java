@@ -7,11 +7,10 @@ import com.msd.atlantis_fest.mapper.ArtistMapper;
 import com.msd.atlantis_fest.repository.ArtistRepository;
 import com.msd.atlantis_fest.service.ArtistService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -22,10 +21,9 @@ public class ArtistServiceImpl implements ArtistService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public List<ArtistOutputDTO> obtenerTodos() {
-        return artistRepository.findAll().stream()
-                .map(artistMapper::toOutputDTO)
-                .collect(Collectors.toList());
+    public Page<ArtistOutputDTO> obtenerTodos(Pageable pageable) {
+        return artistRepository.findAll(pageable)
+                .map(artistMapper::toOutputDTO);
     }
 
     @Override

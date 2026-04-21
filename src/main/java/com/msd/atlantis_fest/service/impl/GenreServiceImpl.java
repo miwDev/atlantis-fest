@@ -7,10 +7,9 @@ import com.msd.atlantis_fest.mapper.GenreMapper;
 import com.msd.atlantis_fest.repository.GenreRepository;
 import com.msd.atlantis_fest.service.GenreService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -20,10 +19,9 @@ public class GenreServiceImpl implements GenreService {
     private final GenreMapper genreMapper;
 
     @Override
-    public List<GenreOutputDTO> obtenerTodos() {
-        return genreRepository.findAll().stream()
-                .map(genreMapper::toOutputDTO)
-                .collect(Collectors.toList());
+    public Page<GenreOutputDTO> obtenerTodos(Pageable pageable) {
+        return genreRepository.findAll(pageable)
+                .map(genreMapper::toOutputDTO);
     }
 
     @Override

@@ -7,10 +7,9 @@ import com.msd.atlantis_fest.mapper.ZoneMapper;
 import com.msd.atlantis_fest.repository.ZoneRepository;
 import com.msd.atlantis_fest.service.ZoneService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -20,10 +19,9 @@ public class ZoneServiceImpl implements ZoneService {
     private final ZoneMapper zoneMapper;
 
     @Override
-    public List<ZoneOutputDTO> obtenerTodos() {
-        return zoneRepository.findAll().stream()
-                .map(zoneMapper::toOutputDTO)
-                .collect(Collectors.toList());
+    public Page<ZoneOutputDTO> obtenerTodos(Pageable pageable) {
+        return zoneRepository.findAll(pageable)
+                .map(zoneMapper::toOutputDTO);
     }
 
     @Override
@@ -60,9 +58,8 @@ public class ZoneServiceImpl implements ZoneService {
     }
 
     @Override
-    public List<ZoneOutputDTO> obtenerZonasPorFestival(Long festivalId) {
-        return zoneRepository.findByFestivalId(festivalId).stream()
-                .map(zoneMapper::toOutputDTO)
-                .collect(Collectors.toList());
+    public Page<ZoneOutputDTO> obtenerZonasPorFestival(Long festivalId, Pageable pageable) {
+        return zoneRepository.findByFestivalId(festivalId, pageable)
+                .map(zoneMapper::toOutputDTO);
     }
 }
