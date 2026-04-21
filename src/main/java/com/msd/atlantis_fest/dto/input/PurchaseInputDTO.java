@@ -1,12 +1,15 @@
 package com.msd.atlantis_fest.dto.input;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import org.antlr.v4.runtime.misc.NotNull;
 
 @Data
 public class PurchaseInputDTO {
-    @NotNull
+    @NotNull(message = "El ID del cliente no puede ser nulo")
     private Long clientId;
-    @NotNull private Long ticketTypeId;
+
+    @NotNull(message = "El ID del tipo de ticket no puede ser nulo")
+    private Long ticketTypeId;
+
     private Double descuentoAplicado;
 }

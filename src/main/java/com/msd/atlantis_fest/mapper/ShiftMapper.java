@@ -5,14 +5,21 @@ import com.msd.atlantis_fest.dto.output.ShiftOutputDTO;
 import com.msd.atlantis_fest.entity.Shift;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
 public interface ShiftMapper {
     @Mapping(source = "staffId", target = "staff.id")
     @Mapping(source = "zoneId", target = "zone.id")
+    @Mapping(target = "id", ignore = true)
     Shift toEntity(ShiftInputDTO inputDTO);
 
     @Mapping(source = "staff.username", target = "staffUsername")
     @Mapping(source = "zone.nombre", target = "zoneNombre")
     ShiftOutputDTO toOutputDTO(Shift entity);
+
+    @Mapping(source = "staffId", target = "staff.id")
+    @Mapping(source = "zoneId", target = "zone.id")
+    @Mapping(target = "id", ignore = true)
+    void updateFromDTO(ShiftInputDTO inputDTO, @MappingTarget Shift entity);
 }

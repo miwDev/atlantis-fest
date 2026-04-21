@@ -6,17 +6,31 @@ import com.msd.atlantis_fest.entity.Client;
 import com.msd.atlantis_fest.entity.Genre;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface ClientMapper {
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "role", ignore = true)
+    @Mapping(target = "purchases", ignore = true)
+    @Mapping(target = "reviews", ignore = true)
     @Mapping(source = "favoriteGenreIds", target = "favoriteGenres")
     Client toEntity(ClientInputDTO inputDTO);
 
     @Mapping(source = "favoriteGenres", target = "favoriteGenres")
     ClientOutputDTO toOutputDTO(Client entity);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "role", ignore = true)
+    @Mapping(target = "purchases", ignore = true)
+    @Mapping(target = "reviews", ignore = true)
+    @Mapping(source = "favoriteGenreIds", target = "favoriteGenres")
+    void updateFromDTO(ClientInputDTO inputDTO, @MappingTarget Client entity);
 
     default List<Genre> map(List<Long> genreIds) {
         if (genreIds == null) {

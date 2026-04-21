@@ -5,12 +5,22 @@ import com.msd.atlantis_fest.dto.output.InvoiceOutputDTO;
 import com.msd.atlantis_fest.entity.Invoice;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
 public interface InvoiceMapper {
     @Mapping(source = "paymentId", target = "payment.id")
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "numeroFactura", ignore = true)
+    @Mapping(target = "fechaEmision", ignore = true)
     Invoice toEntity(InvoiceInputDTO inputDTO);
 
     @Mapping(source = "payment.id", target = "paymentId")
     InvoiceOutputDTO toOutputDTO(Invoice entity);
+
+    @Mapping(source = "paymentId", target = "payment.id")
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "numeroFactura", ignore = true)
+    @Mapping(target = "fechaEmision", ignore = true)
+    void updateFromDTO(InvoiceInputDTO inputDTO, @MappingTarget Invoice entity);
 }

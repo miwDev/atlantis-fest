@@ -19,20 +19,20 @@ public class Shift {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "hora_inicio")
+    @Column(name = "hora_inicio", nullable = false)
     private LocalDateTime horaInicio;
 
-    @Column(name = "hora_fin")
+    @Column(name = "hora_fin", nullable = false)
     private LocalDateTime horaFin;
 
-    @Column(name = "descripcion_tarea")
+    @Column(name = "descripcion_tarea", length = 500)
     private String descripcionTarea;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "staff_id")
+    @JoinColumn(name = "staff_id", nullable = false)
     private Staff staff;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "zona_id")
+    @JoinColumn(name = "zona_id", nullable = false)
     private Zone zone;
 }
