@@ -10,7 +10,6 @@ import org.mapstruct.Mapping;
 public interface ShiftMapper {
     @Mapping(source = "staffId", target = "staff.id")
     @Mapping(source = "zoneId", target = "zone.id")
-    @Mapping(target = "id", ignore = true)
     Shift toEntity(ShiftInputDTO inputDTO);
 
     @Mapping(source = "staff.username", target = "staffUsername")

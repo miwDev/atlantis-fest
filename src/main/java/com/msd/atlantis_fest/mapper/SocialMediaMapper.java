@@ -9,7 +9,6 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface SocialMediaMapper {
     @Mapping(source = "artistId", target = "artist.id")
-    @Mapping(target = "id", ignore = true)
     SocialMedia toEntity(SocialMediaInputDTO inputDTO);
 
     @Mapping(source = "artist.artistName", target = "artistName")

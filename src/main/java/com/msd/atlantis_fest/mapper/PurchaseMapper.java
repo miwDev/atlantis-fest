@@ -10,10 +10,6 @@ import org.mapstruct.Mapping;
 public interface PurchaseMapper {
     @Mapping(source = "clientId", target = "client.id")
     @Mapping(source = "ticketTypeId", target = "ticketType.id")
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "fechaCompra", ignore = true)
-    @Mapping(target = "precioFinal", ignore = true)
-    @Mapping(target = "payment", ignore = true)
     Purchase toEntity(PurchaseInputDTO inputDTO);
 
     @Mapping(source = "client.username", target = "clientUsername")

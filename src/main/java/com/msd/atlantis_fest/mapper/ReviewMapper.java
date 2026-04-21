@@ -8,8 +8,6 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface ReviewMapper {
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "client", ignore = true)
     Review toEntity(ReviewInputDTO inputDTO);
 
     @Mapping(source = "client.username", target = "clientUsername")

@@ -9,10 +9,6 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface ZoneMapper {
     @Mapping(source = "festivalId", target = "festival.id")
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "concerts", ignore = true)
-    @Mapping(target = "foodtrucks", ignore = true)
-    @Mapping(target = "shifts", ignore = true)
     Zone toEntity(ZoneInputDTO inputDTO);
 
     @Mapping(source = "festival.nombre", target = "festivalNombre")

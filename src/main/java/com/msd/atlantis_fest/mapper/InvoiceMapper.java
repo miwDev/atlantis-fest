@@ -9,9 +9,6 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface InvoiceMapper {
     @Mapping(source = "paymentId", target = "payment.id")
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "numeroFactura", ignore = true)
-    @Mapping(target = "fechaEmision", ignore = true)
     Invoice toEntity(InvoiceInputDTO inputDTO);
 
     @Mapping(source = "payment.id", target = "paymentId")
