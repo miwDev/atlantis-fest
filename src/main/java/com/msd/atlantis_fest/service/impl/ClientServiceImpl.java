@@ -7,11 +7,10 @@ import com.msd.atlantis_fest.mapper.ClientMapper;
 import com.msd.atlantis_fest.repository.ClientRepository;
 import com.msd.atlantis_fest.service.ClientService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -22,10 +21,9 @@ public class ClientServiceImpl implements ClientService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public List<ClientOutputDTO> obtenerTodos() {
-        return clientRepository.findAll().stream()
-                .map(clientMapper::toOutputDTO)
-                .collect(Collectors.toList());
+    public Page<ClientOutputDTO> obtenerTodos(Pageable pageable) {
+        return clientRepository.findAll(pageable)
+                .map(clientMapper::toOutputDTO);
     }
 
     @Override

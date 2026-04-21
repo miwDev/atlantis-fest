@@ -8,13 +8,13 @@ import com.msd.atlantis_fest.repository.*;
 import com.msd.atlantis_fest.service.PurchaseService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -28,10 +28,9 @@ public class PurchaseServiceImpl implements PurchaseService {
     private final PurchaseMapper purchaseMapper;
 
     @Override
-    public List<PurchaseOutputDTO> obtenerTodos() {
-        return purchaseRepository.findAll().stream()
-                .map(purchaseMapper::toOutputDTO)
-                .collect(Collectors.toList());
+    public Page<PurchaseOutputDTO> obtenerTodos(Pageable pageable) {
+        return purchaseRepository.findAll(pageable)
+                .map(purchaseMapper::toOutputDTO);
     }
 
     @Override

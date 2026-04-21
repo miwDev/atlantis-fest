@@ -7,10 +7,9 @@ import com.msd.atlantis_fest.mapper.ShiftMapper;
 import com.msd.atlantis_fest.repository.ShiftRepository;
 import com.msd.atlantis_fest.service.ShiftService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -20,10 +19,9 @@ public class ShiftServiceImpl implements ShiftService {
     private final ShiftMapper shiftMapper;
 
     @Override
-    public List<ShiftOutputDTO> obtenerTodos() {
-        return shiftRepository.findAll().stream()
-                .map(shiftMapper::toOutputDTO)
-                .collect(Collectors.toList());
+    public Page<ShiftOutputDTO> obtenerTodos(Pageable pageable) {
+        return shiftRepository.findAll(pageable)
+                .map(shiftMapper::toOutputDTO);
     }
 
     @Override

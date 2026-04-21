@@ -7,10 +7,9 @@ import com.msd.atlantis_fest.mapper.FestivalMapper;
 import com.msd.atlantis_fest.repository.FestivalRepository;
 import com.msd.atlantis_fest.service.FestivalService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -20,10 +19,9 @@ public class FestivalServiceImpl implements FestivalService {
     private final FestivalMapper festivalMapper;
 
     @Override
-    public List<FestivalOutputDTO> obtenerTodos() {
-        return festivalRepository.findAll().stream()
-                .map(festivalMapper::toOutputDTO)
-                .collect(Collectors.toList());
+    public Page<FestivalOutputDTO> obtenerTodos(Pageable pageable) {
+        return festivalRepository.findAll(pageable)
+                .map(festivalMapper::toOutputDTO);
     }
 
     @Override
