@@ -5,10 +5,10 @@ import com.msd.atlantis_fest.dto.output.ReviewOutputDTO;
 import com.msd.atlantis_fest.service.ReviewService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/resenas")
@@ -18,8 +18,8 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     @GetMapping
-    public ResponseEntity<List<ReviewOutputDTO>> obtenerResenas() {
-        return ResponseEntity.ok(reviewService.obtenerTodos());
+    public ResponseEntity<Page<ReviewOutputDTO>> obtenerResenas(Pageable pageable) {
+        return ResponseEntity.ok(reviewService.obtenerTodos(pageable));
     }
 
     @GetMapping("/{id}")

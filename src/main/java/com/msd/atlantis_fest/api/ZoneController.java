@@ -5,10 +5,10 @@ import com.msd.atlantis_fest.dto.output.ZoneOutputDTO;
 import com.msd.atlantis_fest.service.ZoneService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/zonas")
@@ -18,8 +18,8 @@ public class ZoneController {
     private final ZoneService zoneService;
 
     @GetMapping
-    public ResponseEntity<List<ZoneOutputDTO>> obtenerZonas() {
-        return ResponseEntity.ok(zoneService.obtenerTodos());
+    public ResponseEntity<Page<ZoneOutputDTO>> obtenerZonas(Pageable pageable) {
+        return ResponseEntity.ok(zoneService.obtenerTodos(pageable));
     }
 
     @GetMapping("/{id}")
@@ -46,7 +46,7 @@ public class ZoneController {
     }
 
     @GetMapping("/festival/{festivalId}")
-    public ResponseEntity<List<ZoneOutputDTO>> obtenerZonasPorFestival(@PathVariable Long festivalId) {
-        return ResponseEntity.ok(zoneService.obtenerZonasPorFestival(festivalId));
+    public ResponseEntity<Page<ZoneOutputDTO>> obtenerZonasPorFestival(@PathVariable Long festivalId, Pageable pageable) {
+        return ResponseEntity.ok(zoneService.obtenerZonasPorFestival(festivalId, pageable));
     }
 }

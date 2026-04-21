@@ -5,10 +5,10 @@ import com.msd.atlantis_fest.dto.output.FoodtruckOutputDTO;
 import com.msd.atlantis_fest.service.FoodtruckService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/foodtrucks")
@@ -18,8 +18,8 @@ public class FoodtruckController {
     private final FoodtruckService foodtruckService;
 
     @GetMapping
-    public ResponseEntity<List<FoodtruckOutputDTO>> obtenerFoodtrucks() {
-        return ResponseEntity.ok(foodtruckService.obtenerTodos());
+    public ResponseEntity<Page<FoodtruckOutputDTO>> obtenerFoodtrucks(Pageable pageable) {
+        return ResponseEntity.ok(foodtruckService.obtenerTodos(pageable));
     }
 
     @GetMapping("/{id}")
