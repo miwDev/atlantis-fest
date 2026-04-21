@@ -5,10 +5,10 @@ import com.msd.atlantis_fest.dto.output.PurchaseOutputDTO;
 import com.msd.atlantis_fest.service.PurchaseService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/compras")
@@ -18,8 +18,8 @@ public class PurchaseController {
     private final PurchaseService purchaseService;
 
     @GetMapping
-    public ResponseEntity<List<PurchaseOutputDTO>> obtenerCompras() {
-        return ResponseEntity.ok(purchaseService.obtenerTodos());
+    public ResponseEntity<Page<PurchaseOutputDTO>> obtenerCompras(Pageable pageable) {
+        return ResponseEntity.ok(purchaseService.obtenerTodos(pageable));
     }
 
     @GetMapping("/{id}")

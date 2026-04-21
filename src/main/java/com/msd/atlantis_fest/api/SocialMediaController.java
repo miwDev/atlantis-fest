@@ -5,10 +5,10 @@ import com.msd.atlantis_fest.dto.output.SocialMediaOutputDTO;
 import com.msd.atlantis_fest.service.SocialMediaService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/redes-sociales")
@@ -18,8 +18,8 @@ public class SocialMediaController {
     private final SocialMediaService socialMediaService;
 
     @GetMapping
-    public ResponseEntity<List<SocialMediaOutputDTO>> obtenerRedesSociales() {
-        return ResponseEntity.ok(socialMediaService.obtenerTodos());
+    public ResponseEntity<Page<SocialMediaOutputDTO>> obtenerRedesSociales(Pageable pageable) {
+        return ResponseEntity.ok(socialMediaService.obtenerTodos(pageable));
     }
 
     @GetMapping("/{id}")

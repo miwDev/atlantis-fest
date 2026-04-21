@@ -1,0 +1,7 @@
+package com.msd.atlantis_fest.exception.custom;
+
+public class BusinessValidationException extends RuntimeException {
+    public BusinessValidationException(String message) {
+        super(message);
+    }
+}
