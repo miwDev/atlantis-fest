@@ -3,6 +3,7 @@ package com.msd.atlantis_fest.service.impl;
 import com.msd.atlantis_fest.dto.input.ClientInputDTO;
 import com.msd.atlantis_fest.dto.output.ClientOutputDTO;
 import com.msd.atlantis_fest.entity.Client;
+import com.msd.atlantis_fest.exception.custom.ResourceNotFoundException;
 import com.msd.atlantis_fest.mapper.ClientMapper;
 import com.msd.atlantis_fest.repository.ClientRepository;
 import com.msd.atlantis_fest.service.ClientService;
@@ -30,7 +31,7 @@ public class ClientServiceImpl implements ClientService {
     public ClientOutputDTO obtenerPorId(Long id) {
         return clientRepository.findById(id)
                 .map(clientMapper::toOutputDTO)
-                .orElse(null);
+                .orElseThrow(() -> new ResourceNotFoundException("Cliente no encontrado con id: " + id));
     }
 
     @Override
@@ -50,7 +51,7 @@ public class ClientServiceImpl implements ClientService {
                     }
                     return clientMapper.toOutputDTO(clientRepository.save(client));
                 })
-                .orElse(null);
+                .orElseThrow(() -> new ResourceNotFoundException("Cliente no encontrado con id: " + id));
     }
 
     @Override

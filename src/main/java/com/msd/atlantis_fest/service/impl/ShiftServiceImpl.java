@@ -3,6 +3,7 @@ package com.msd.atlantis_fest.service.impl;
 import com.msd.atlantis_fest.dto.input.ShiftInputDTO;
 import com.msd.atlantis_fest.dto.output.ShiftOutputDTO;
 import com.msd.atlantis_fest.entity.Shift;
+import com.msd.atlantis_fest.exception.custom.ResourceNotFoundException;
 import com.msd.atlantis_fest.mapper.ShiftMapper;
 import com.msd.atlantis_fest.repository.ShiftRepository;
 import com.msd.atlantis_fest.service.ShiftService;
@@ -28,7 +29,7 @@ public class ShiftServiceImpl implements ShiftService {
     public ShiftOutputDTO obtenerPorId(Long id) {
         return shiftRepository.findById(id)
                 .map(shiftMapper::toOutputDTO)
-                .orElse(null);
+                .orElseThrow(() -> new ResourceNotFoundException("Turno no encontrado con id: " + id));
     }
 
     @Override
@@ -44,7 +45,7 @@ public class ShiftServiceImpl implements ShiftService {
                     shiftMapper.updateFromDTO(inputDTO, shift);
                     return shiftMapper.toOutputDTO(shiftRepository.save(shift));
                 })
-                .orElse(null);
+                .orElseThrow(() -> new ResourceNotFoundException("Turno no encontrado con id: " + id));
     }
 
     @Override

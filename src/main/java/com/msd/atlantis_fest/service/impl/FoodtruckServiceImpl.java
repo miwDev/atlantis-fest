@@ -3,6 +3,7 @@ package com.msd.atlantis_fest.service.impl;
 import com.msd.atlantis_fest.dto.input.FoodtruckInputDTO;
 import com.msd.atlantis_fest.dto.output.FoodtruckOutputDTO;
 import com.msd.atlantis_fest.entity.Foodtruck;
+import com.msd.atlantis_fest.exception.custom.ResourceNotFoundException;
 import com.msd.atlantis_fest.mapper.FoodtruckMapper;
 import com.msd.atlantis_fest.repository.FoodtruckRepository;
 import com.msd.atlantis_fest.service.FoodtruckService;
@@ -30,7 +31,7 @@ public class FoodtruckServiceImpl implements FoodtruckService {
     public FoodtruckOutputDTO obtenerPorId(Long id) {
         return foodtruckRepository.findById(id)
                 .map(foodtruckMapper::toOutputDTO)
-                .orElse(null);
+                .orElseThrow(() -> new ResourceNotFoundException("Foodtruck no encontrado con id: " + id));
     }
 
     @Override
@@ -50,7 +51,7 @@ public class FoodtruckServiceImpl implements FoodtruckService {
                     }
                     return foodtruckMapper.toOutputDTO(foodtruckRepository.save(foodtruck));
                 })
-                .orElse(null);
+                .orElseThrow(() -> new ResourceNotFoundException("Foodtruck no encontrado con id: " + id));
     }
 
     @Override
