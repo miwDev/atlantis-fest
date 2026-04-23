@@ -34,3 +34,6 @@ build/
 
 ###confidential info ###
 .env
+
+###Db data ###
+data/
