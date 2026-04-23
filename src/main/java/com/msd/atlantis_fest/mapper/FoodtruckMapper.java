@@ -5,6 +5,7 @@ import com.msd.atlantis_fest.dto.output.FoodtruckOutputDTO;
 import com.msd.atlantis_fest.entity.Foodtruck;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
 public interface FoodtruckMapper {
@@ -19,4 +20,13 @@ public interface FoodtruckMapper {
 
     @Mapping(source = "zone.nombre", target = "zoneNombre")
     FoodtruckOutputDTO toOutputDTO(Foodtruck entity);
+
+    @Mapping(source = "zoneId", target = "zone.id")
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "role", ignore = true)
+    @Mapping(target = "estaAbierto", ignore = true)
+    @Mapping(target = "latitudActual", ignore = true)
+    @Mapping(target = "longitudActual", ignore = true)
+    void updateFromDTO(FoodtruckInputDTO inputDTO, @MappingTarget Foodtruck entity);
 }

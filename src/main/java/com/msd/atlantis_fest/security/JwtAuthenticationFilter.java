@@ -6,7 +6,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.antlr.v4.runtime.atn.ErrorInfo;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -44,7 +43,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             jwtToken = authorizationHeader.substring(7);
             username = jwtService.extractUsername(jwtToken);
 
-            if(Objects.isNull(username) && Objects.isNull(SecurityContextHolder.getContext().getAuthentication())) {
+            if(Objects.nonNull(username) && Objects.isNull(SecurityContextHolder.getContext().getAuthentication())) {
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
                 if(jwtService.isTokenValid(jwtToken, userDetails)) {
