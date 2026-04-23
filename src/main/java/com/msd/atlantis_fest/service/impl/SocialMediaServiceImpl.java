@@ -7,10 +7,9 @@ import com.msd.atlantis_fest.mapper.SocialMediaMapper;
 import com.msd.atlantis_fest.repository.SocialMediaRepository;
 import com.msd.atlantis_fest.service.SocialMediaService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -20,10 +19,9 @@ public class SocialMediaServiceImpl implements SocialMediaService {
     private final SocialMediaMapper socialMediaMapper;
 
     @Override
-    public List<SocialMediaOutputDTO> obtenerTodos() {
-        return socialMediaRepository.findAll().stream()
-                .map(socialMediaMapper::toOutputDTO)
-                .collect(Collectors.toList());
+    public Page<SocialMediaOutputDTO> obtenerTodos(Pageable pageable) {
+        return socialMediaRepository.findAll(pageable)
+                .map(socialMediaMapper::toOutputDTO);
     }
 
     @Override

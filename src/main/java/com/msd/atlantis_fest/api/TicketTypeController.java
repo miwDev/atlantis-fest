@@ -5,10 +5,10 @@ import com.msd.atlantis_fest.dto.output.TicketTypeOutputDTO;
 import com.msd.atlantis_fest.service.TicketTypeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/tipos-ticket")
@@ -18,8 +18,8 @@ public class TicketTypeController {
     private final TicketTypeService ticketTypeService;
 
     @GetMapping
-    public ResponseEntity<List<TicketTypeOutputDTO>> obtenerTiposTicket() {
-        return ResponseEntity.ok(ticketTypeService.obtenerTodos());
+    public ResponseEntity<Page<TicketTypeOutputDTO>> obtenerTiposTicket(Pageable pageable) {
+        return ResponseEntity.ok(ticketTypeService.obtenerTodos(pageable));
     }
 
     @GetMapping("/{id}")

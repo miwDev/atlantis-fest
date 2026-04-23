@@ -5,10 +5,10 @@ import com.msd.atlantis_fest.dto.output.GenreOutputDTO;
 import com.msd.atlantis_fest.service.GenreService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/generos")
@@ -18,8 +18,8 @@ public class GenreController {
     private final GenreService genreService;
 
     @GetMapping
-    public ResponseEntity<List<GenreOutputDTO>> obtenerGeneros() {
-        return ResponseEntity.ok(genreService.obtenerTodos());
+    public ResponseEntity<Page<GenreOutputDTO>> obtenerGeneros(Pageable pageable) {
+        return ResponseEntity.ok(genreService.obtenerTodos(pageable));
     }
 
     @GetMapping("/{id}")

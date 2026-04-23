@@ -5,10 +5,10 @@ import com.msd.atlantis_fest.dto.output.ClientOutputDTO;
 import com.msd.atlantis_fest.service.ClientService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/clientes")
@@ -18,8 +18,8 @@ public class ClientController {
     private final ClientService clientService;
 
     @GetMapping
-    public ResponseEntity<List<ClientOutputDTO>> obtenerClientes() {
-        return ResponseEntity.ok(clientService.obtenerTodos());
+    public ResponseEntity<Page<ClientOutputDTO>> obtenerClientes(Pageable pageable) {
+        return ResponseEntity.ok(clientService.obtenerTodos(pageable));
     }
 
     @GetMapping("/{id}")

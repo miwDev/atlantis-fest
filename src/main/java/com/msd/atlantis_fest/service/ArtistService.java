@@ -2,11 +2,11 @@ package com.msd.atlantis_fest.service;
 
 import com.msd.atlantis_fest.dto.input.ArtistInputDTO;
 import com.msd.atlantis_fest.dto.output.ArtistOutputDTO;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface ArtistService {
-    List<ArtistOutputDTO> obtenerTodos();
+    Page<ArtistOutputDTO> obtenerTodos(Pageable pageable);
     ArtistOutputDTO obtenerPorId(Long id);
     ArtistOutputDTO crear(ArtistInputDTO inputDTO);
     ArtistOutputDTO actualizar(Long id, ArtistInputDTO inputDTO);

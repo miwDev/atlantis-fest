@@ -7,10 +7,9 @@ import com.msd.atlantis_fest.mapper.InvoiceMapper;
 import com.msd.atlantis_fest.repository.InvoiceRepository;
 import com.msd.atlantis_fest.service.InvoiceService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -20,10 +19,9 @@ public class InvoiceServiceImpl implements InvoiceService {
     private final InvoiceMapper invoiceMapper;
 
     @Override
-    public List<InvoiceOutputDTO> obtenerTodos() {
-        return invoiceRepository.findAll().stream()
-                .map(invoiceMapper::toOutputDTO)
-                .collect(Collectors.toList());
+    public Page<InvoiceOutputDTO> obtenerTodos(Pageable pageable) {
+        return invoiceRepository.findAll(pageable)
+                .map(invoiceMapper::toOutputDTO);
     }
 
     @Override

@@ -5,10 +5,10 @@ import com.msd.atlantis_fest.dto.output.InvoiceOutputDTO;
 import com.msd.atlantis_fest.service.InvoiceService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/facturas")
@@ -18,8 +18,8 @@ public class InvoiceController {
     private final InvoiceService invoiceService;
 
     @GetMapping
-    public ResponseEntity<List<InvoiceOutputDTO>> obtenerFacturas() {
-        return ResponseEntity.ok(invoiceService.obtenerTodos());
+    public ResponseEntity<Page<InvoiceOutputDTO>> obtenerFacturas(Pageable pageable) {
+        return ResponseEntity.ok(invoiceService.obtenerTodos(pageable));
     }
 
     @GetMapping("/{id}")

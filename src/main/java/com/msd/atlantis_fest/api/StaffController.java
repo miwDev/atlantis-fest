@@ -5,10 +5,10 @@ import com.msd.atlantis_fest.dto.output.StaffOutputDTO;
 import com.msd.atlantis_fest.service.StaffService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/staff")
@@ -18,8 +18,8 @@ public class StaffController {
     private final StaffService staffService;
 
     @GetMapping
-    public ResponseEntity<List<StaffOutputDTO>> obtenerStaff() {
-        return ResponseEntity.ok(staffService.obtenerTodos());
+    public ResponseEntity<Page<StaffOutputDTO>> obtenerStaff(Pageable pageable) {
+        return ResponseEntity.ok(staffService.obtenerTodos(pageable));
     }
 
     @GetMapping("/{id}")

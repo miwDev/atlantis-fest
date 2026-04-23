@@ -5,10 +5,10 @@ import com.msd.atlantis_fest.dto.output.FestivalOutputDTO;
 import com.msd.atlantis_fest.service.FestivalService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/festivales")
@@ -18,8 +18,8 @@ public class FestivalController {
     private final FestivalService festivalService;
 
     @GetMapping
-    public ResponseEntity<List<FestivalOutputDTO>> obtenerFestivales() {
-        return ResponseEntity.ok(festivalService.obtenerTodos());
+    public ResponseEntity<Page<FestivalOutputDTO>> obtenerFestivales(Pageable pageable) {
+        return ResponseEntity.ok(festivalService.obtenerTodos(pageable));
     }
 
     @GetMapping("/{id}")

@@ -7,11 +7,10 @@ import com.msd.atlantis_fest.mapper.FoodtruckMapper;
 import com.msd.atlantis_fest.repository.FoodtruckRepository;
 import com.msd.atlantis_fest.service.FoodtruckService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -22,10 +21,9 @@ public class FoodtruckServiceImpl implements FoodtruckService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public List<FoodtruckOutputDTO> obtenerTodos() {
-        return foodtruckRepository.findAll().stream()
-                .map(foodtruckMapper::toOutputDTO)
-                .collect(Collectors.toList());
+    public Page<FoodtruckOutputDTO> obtenerTodos(Pageable pageable) {
+        return foodtruckRepository.findAll(pageable)
+                .map(foodtruckMapper::toOutputDTO);
     }
 
     @Override

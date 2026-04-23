@@ -5,10 +5,10 @@ import com.msd.atlantis_fest.dto.output.ConcertOutputDto;
 import com.msd.atlantis_fest.service.ConcertService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/conciertos")
@@ -18,8 +18,8 @@ public class ConcertController {
     private final ConcertService concertService;
 
     @GetMapping
-    public ResponseEntity<List<ConcertOutputDto>> obtenerConciertos() {
-        return ResponseEntity.ok(concertService.obtenerTodos());
+    public ResponseEntity<Page<ConcertOutputDto>> obtenerConciertos(Pageable pageable) {
+        return ResponseEntity.ok(concertService.obtenerTodos(pageable));
     }
 
     @GetMapping("/{id}")
@@ -46,7 +46,7 @@ public class ConcertController {
     }
 
     @GetMapping("/artista/{artistId}")
-    public ResponseEntity<List<ConcertOutputDto>> obtenerConciertosPorArtista(@PathVariable Long artistId) {
-        return ResponseEntity.ok(concertService.obtenerConciertosPorArtista(artistId));
+    public ResponseEntity<Page<ConcertOutputDto>> obtenerConciertosPorArtista(@PathVariable Long artistId, Pageable pageable) {
+        return ResponseEntity.ok(concertService.obtenerConciertosPorArtista(artistId, pageable));
     }
 }

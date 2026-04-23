@@ -7,10 +7,9 @@ import com.msd.atlantis_fest.mapper.ReviewMapper;
 import com.msd.atlantis_fest.repository.ReviewRepository;
 import com.msd.atlantis_fest.service.ReviewService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -20,10 +19,9 @@ public class ReviewServiceImpl implements ReviewService {
     private final ReviewMapper reviewMapper;
 
     @Override
-    public List<ReviewOutputDTO> obtenerTodos() {
-        return reviewRepository.findAll().stream()
-                .map(reviewMapper::toOutputDTO)
-                .collect(Collectors.toList());
+    public Page<ReviewOutputDTO> obtenerTodos(Pageable pageable) {
+        return reviewRepository.findAll(pageable)
+                .map(reviewMapper::toOutputDTO);
     }
 
     @Override

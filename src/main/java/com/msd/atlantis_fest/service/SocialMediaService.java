@@ -2,11 +2,11 @@ package com.msd.atlantis_fest.service;
 
 import com.msd.atlantis_fest.dto.input.SocialMediaInputDTO;
 import com.msd.atlantis_fest.dto.output.SocialMediaOutputDTO;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface SocialMediaService {
-    List<SocialMediaOutputDTO> obtenerTodos();
+    Page<SocialMediaOutputDTO> obtenerTodos(Pageable pageable);
     SocialMediaOutputDTO obtenerPorId(Long id);
     SocialMediaOutputDTO crear(SocialMediaInputDTO inputDTO);
     SocialMediaOutputDTO actualizar(Long id, SocialMediaInputDTO inputDTO);
