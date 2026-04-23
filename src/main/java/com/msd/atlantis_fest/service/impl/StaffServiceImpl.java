@@ -3,6 +3,7 @@ package com.msd.atlantis_fest.service.impl;
 import com.msd.atlantis_fest.dto.input.StaffInputDTO;
 import com.msd.atlantis_fest.dto.output.StaffOutputDTO;
 import com.msd.atlantis_fest.entity.Staff;
+import com.msd.atlantis_fest.exception.custom.ResourceNotFoundException;
 import com.msd.atlantis_fest.mapper.StaffMapper;
 import com.msd.atlantis_fest.repository.StaffRepository;
 import com.msd.atlantis_fest.service.StaffService;
@@ -30,7 +31,7 @@ public class StaffServiceImpl implements StaffService {
     public StaffOutputDTO obtenerPorId(Long id) {
         return staffRepository.findById(id)
                 .map(staffMapper::toOutputDTO)
-                .orElse(null);
+                .orElseThrow(() -> new ResourceNotFoundException("Staff no encontrado con id: " + id));
     }
 
     @Override
@@ -50,7 +51,7 @@ public class StaffServiceImpl implements StaffService {
                     }
                     return staffMapper.toOutputDTO(staffRepository.save(staff));
                 })
-                .orElse(null);
+                .orElseThrow(() -> new ResourceNotFoundException("Staff no encontrado con id: " + id));
     }
 
     @Override

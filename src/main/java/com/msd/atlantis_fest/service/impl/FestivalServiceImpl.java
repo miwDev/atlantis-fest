@@ -3,6 +3,7 @@ package com.msd.atlantis_fest.service.impl;
 import com.msd.atlantis_fest.dto.input.FestivalInputDTO;
 import com.msd.atlantis_fest.dto.output.FestivalOutputDTO;
 import com.msd.atlantis_fest.entity.Festival;
+import com.msd.atlantis_fest.exception.custom.ResourceNotFoundException;
 import com.msd.atlantis_fest.mapper.FestivalMapper;
 import com.msd.atlantis_fest.repository.FestivalRepository;
 import com.msd.atlantis_fest.service.FestivalService;
@@ -28,7 +29,7 @@ public class FestivalServiceImpl implements FestivalService {
     public FestivalOutputDTO obtenerPorId(Long id) {
         return festivalRepository.findById(id)
                 .map(festivalMapper::toOutputDTO)
-                .orElse(null);
+                .orElseThrow(() -> new ResourceNotFoundException("Festival no encontrado con id: " + id));
     }
 
     @Override
@@ -44,7 +45,7 @@ public class FestivalServiceImpl implements FestivalService {
                     festivalMapper.updateFromDTO(inputDTO, festival);
                     return festivalMapper.toOutputDTO(festivalRepository.save(festival));
                 })
-                .orElse(null);
+                .orElseThrow(() -> new ResourceNotFoundException("Festival no encontrado con id: " + id));
     }
 
     @Override

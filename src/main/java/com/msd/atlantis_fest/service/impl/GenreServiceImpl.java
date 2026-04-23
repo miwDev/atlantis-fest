@@ -3,6 +3,7 @@ package com.msd.atlantis_fest.service.impl;
 import com.msd.atlantis_fest.dto.input.GenreInputDTO;
 import com.msd.atlantis_fest.dto.output.GenreOutputDTO;
 import com.msd.atlantis_fest.entity.Genre;
+import com.msd.atlantis_fest.exception.custom.ResourceNotFoundException;
 import com.msd.atlantis_fest.mapper.GenreMapper;
 import com.msd.atlantis_fest.repository.GenreRepository;
 import com.msd.atlantis_fest.service.GenreService;
@@ -28,7 +29,7 @@ public class GenreServiceImpl implements GenreService {
     public GenreOutputDTO obtenerPorId(Long id) {
         return genreRepository.findById(id)
                 .map(genreMapper::toOutputDTO)
-                .orElse(null);
+                .orElseThrow(() -> new ResourceNotFoundException("Género no encontrado con id: " + id));
     }
 
     @Override
@@ -44,7 +45,7 @@ public class GenreServiceImpl implements GenreService {
                     genreMapper.updateFromDTO(inputDTO, genre);
                     return genreMapper.toOutputDTO(genreRepository.save(genre));
                 })
-                .orElse(null);
+                .orElseThrow(() -> new ResourceNotFoundException("Género no encontrado con id: " + id));
     }
 
     @Override

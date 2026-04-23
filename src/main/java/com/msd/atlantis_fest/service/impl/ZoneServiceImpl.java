@@ -3,6 +3,7 @@ package com.msd.atlantis_fest.service.impl;
 import com.msd.atlantis_fest.dto.input.ZoneInputDTO;
 import com.msd.atlantis_fest.dto.output.ZoneOutputDTO;
 import com.msd.atlantis_fest.entity.Zone;
+import com.msd.atlantis_fest.exception.custom.ResourceNotFoundException;
 import com.msd.atlantis_fest.mapper.ZoneMapper;
 import com.msd.atlantis_fest.repository.ZoneRepository;
 import com.msd.atlantis_fest.service.ZoneService;
@@ -28,7 +29,7 @@ public class ZoneServiceImpl implements ZoneService {
     public ZoneOutputDTO obtenerPorId(Long id) {
         return zoneRepository.findById(id)
                 .map(zoneMapper::toOutputDTO)
-                .orElse(null);
+                .orElseThrow(() -> new ResourceNotFoundException("Zona no encontrada con id: " + id));
     }
 
     @Override
@@ -44,7 +45,7 @@ public class ZoneServiceImpl implements ZoneService {
                     zoneMapper.updateFromDTO(inputDTO, zone);
                     return zoneMapper.toOutputDTO(zoneRepository.save(zone));
                 })
-                .orElse(null);
+                .orElseThrow(() -> new ResourceNotFoundException("Zona no encontrada con id: " + id));
     }
 
     @Override

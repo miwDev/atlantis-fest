@@ -3,6 +3,7 @@ package com.msd.atlantis_fest.service.impl;
 import com.msd.atlantis_fest.dto.input.ArtistInputDTO;
 import com.msd.atlantis_fest.dto.output.ArtistOutputDTO;
 import com.msd.atlantis_fest.entity.Artist;
+import com.msd.atlantis_fest.exception.custom.ResourceNotFoundException;
 import com.msd.atlantis_fest.mapper.ArtistMapper;
 import com.msd.atlantis_fest.repository.ArtistRepository;
 import com.msd.atlantis_fest.service.ArtistService;
@@ -30,7 +31,7 @@ public class ArtistServiceImpl implements ArtistService {
     public ArtistOutputDTO obtenerPorId(Long id) {
         return artistRepository.findById(id)
                 .map(artistMapper::toOutputDTO)
-                .orElse(null);
+                .orElseThrow(() -> new ResourceNotFoundException("Artista no encontrado con id: " + id));
     }
 
     @Override
@@ -50,7 +51,7 @@ public class ArtistServiceImpl implements ArtistService {
                     }
                     return artistMapper.toOutputDTO(artistRepository.save(artist));
                 })
-                .orElse(null);
+                .orElseThrow(() -> new ResourceNotFoundException("Artista no encontrado con id: " + id));
     }
 
     @Override

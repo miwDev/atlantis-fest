@@ -3,6 +3,7 @@ package com.msd.atlantis_fest.service.impl;
 import com.msd.atlantis_fest.dto.input.TicketTypeInputDTO;
 import com.msd.atlantis_fest.dto.output.TicketTypeOutputDTO;
 import com.msd.atlantis_fest.entity.TicketType;
+import com.msd.atlantis_fest.exception.custom.ResourceNotFoundException;
 import com.msd.atlantis_fest.mapper.TicketTypeMapper;
 import com.msd.atlantis_fest.repository.TicketTypeRepository;
 import com.msd.atlantis_fest.service.TicketTypeService;
@@ -28,7 +29,7 @@ public class TicketTypeServiceImpl implements TicketTypeService {
     public TicketTypeOutputDTO obtenerPorId(Long id) {
         return ticketTypeRepository.findById(id)
                 .map(ticketTypeMapper::toOutputDTO)
-                .orElse(null);
+                .orElseThrow(() -> new ResourceNotFoundException("Tipo de ticket no encontrado con id: " + id));
     }
 
     @Override
@@ -44,7 +45,7 @@ public class TicketTypeServiceImpl implements TicketTypeService {
                     ticketTypeMapper.updateFromDTO(inputDTO, ticketType);
                     return ticketTypeMapper.toOutputDTO(ticketTypeRepository.save(ticketType));
                 })
-                .orElse(null);
+                .orElseThrow(() -> new ResourceNotFoundException("Tipo de ticket no encontrado con id: " + id));
     }
 
     @Override

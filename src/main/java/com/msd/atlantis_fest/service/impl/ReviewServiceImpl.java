@@ -3,6 +3,7 @@ package com.msd.atlantis_fest.service.impl;
 import com.msd.atlantis_fest.dto.input.ReviewInputDTO;
 import com.msd.atlantis_fest.dto.output.ReviewOutputDTO;
 import com.msd.atlantis_fest.entity.Review;
+import com.msd.atlantis_fest.exception.custom.ResourceNotFoundException;
 import com.msd.atlantis_fest.mapper.ReviewMapper;
 import com.msd.atlantis_fest.repository.ReviewRepository;
 import com.msd.atlantis_fest.service.ReviewService;
@@ -28,7 +29,7 @@ public class ReviewServiceImpl implements ReviewService {
     public ReviewOutputDTO obtenerPorId(Long id) {
         return reviewRepository.findById(id)
                 .map(reviewMapper::toOutputDTO)
-                .orElse(null);
+                .orElseThrow(() -> new ResourceNotFoundException("Reseña no encontrada con id: " + id));
     }
 
     @Override
@@ -44,7 +45,7 @@ public class ReviewServiceImpl implements ReviewService {
                     reviewMapper.updateFromDTO(inputDTO, review);
                     return reviewMapper.toOutputDTO(reviewRepository.save(review));
                 })
-                .orElse(null);
+                .orElseThrow(() -> new ResourceNotFoundException("Reseña no encontrada con id: " + id));
     }
 
     @Override

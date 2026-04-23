@@ -3,6 +3,7 @@ package com.msd.atlantis_fest.service.impl;
 import com.msd.atlantis_fest.dto.input.ConcertInputDTO;
 import com.msd.atlantis_fest.dto.output.ConcertOutputDto;
 import com.msd.atlantis_fest.entity.Concert;
+import com.msd.atlantis_fest.exception.custom.ResourceNotFoundException;
 import com.msd.atlantis_fest.mapper.ConcertMapper;
 import com.msd.atlantis_fest.repository.ConcertRepository;
 import com.msd.atlantis_fest.service.ConcertService;
@@ -28,7 +29,7 @@ public class ConcertServiceImpl implements ConcertService {
     public ConcertOutputDto obtenerPorId(Long id) {
         return concertRepository.findById(id)
                 .map(concertMapper::toOutputDTO)
-                .orElse(null);
+                .orElseThrow(() -> new ResourceNotFoundException("Concierto no encontrado con id: " + id));
     }
 
     @Override
@@ -44,7 +45,7 @@ public class ConcertServiceImpl implements ConcertService {
                     concertMapper.updateFromDTO(inputDTO, concert);
                     return concertMapper.toOutputDTO(concertRepository.save(concert));
                 })
-                .orElse(null);
+                .orElseThrow(() -> new ResourceNotFoundException("Concierto no encontrado con id: " + id));
     }
 
     @Override

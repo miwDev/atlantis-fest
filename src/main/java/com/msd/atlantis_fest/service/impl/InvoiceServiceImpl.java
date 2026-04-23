@@ -3,6 +3,7 @@ package com.msd.atlantis_fest.service.impl;
 import com.msd.atlantis_fest.dto.input.InvoiceInputDTO;
 import com.msd.atlantis_fest.dto.output.InvoiceOutputDTO;
 import com.msd.atlantis_fest.entity.Invoice;
+import com.msd.atlantis_fest.exception.custom.ResourceNotFoundException;
 import com.msd.atlantis_fest.mapper.InvoiceMapper;
 import com.msd.atlantis_fest.repository.InvoiceRepository;
 import com.msd.atlantis_fest.service.InvoiceService;
@@ -28,7 +29,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     public InvoiceOutputDTO obtenerPorId(Long id) {
         return invoiceRepository.findById(id)
                 .map(invoiceMapper::toOutputDTO)
-                .orElse(null);
+                .orElseThrow(() -> new ResourceNotFoundException("Factura no encontrada con id: " + id));
     }
 
     @Override
@@ -44,7 +45,7 @@ public class InvoiceServiceImpl implements InvoiceService {
                     invoiceMapper.updateFromDTO(inputDTO, invoice);
                     return invoiceMapper.toOutputDTO(invoiceRepository.save(invoice));
                 })
-                .orElse(null);
+                .orElseThrow(() -> new ResourceNotFoundException("Factura no encontrada con id: " + id));
     }
 
     @Override

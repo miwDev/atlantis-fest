@@ -3,6 +3,7 @@ package com.msd.atlantis_fest.service.impl;
 import com.msd.atlantis_fest.dto.input.SocialMediaInputDTO;
 import com.msd.atlantis_fest.dto.output.SocialMediaOutputDTO;
 import com.msd.atlantis_fest.entity.SocialMedia;
+import com.msd.atlantis_fest.exception.custom.ResourceNotFoundException;
 import com.msd.atlantis_fest.mapper.SocialMediaMapper;
 import com.msd.atlantis_fest.repository.SocialMediaRepository;
 import com.msd.atlantis_fest.service.SocialMediaService;
@@ -28,7 +29,7 @@ public class SocialMediaServiceImpl implements SocialMediaService {
     public SocialMediaOutputDTO obtenerPorId(Long id) {
         return socialMediaRepository.findById(id)
                 .map(socialMediaMapper::toOutputDTO)
-                .orElse(null);
+                .orElseThrow(() -> new ResourceNotFoundException("Red social no encontrada con id: " + id));
     }
 
     @Override
@@ -44,7 +45,7 @@ public class SocialMediaServiceImpl implements SocialMediaService {
                     socialMediaMapper.updateFromDTO(inputDTO, socialMedia);
                     return socialMediaMapper.toOutputDTO(socialMediaRepository.save(socialMedia));
                 })
-                .orElse(null);
+                .orElseThrow(() -> new ResourceNotFoundException("Red social no encontrada con id: " + id));
     }
 
     @Override
