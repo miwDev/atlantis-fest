@@ -22,10 +22,14 @@ public interface ArtistMapper {
     @Mapping(target = "socialMediaLinks", ignore = true)
     @Mapping(target = "fotoUrl", ignore = true)
     @Mapping(source = "genreIds", target = "genres")
+    @Mapping(source = "email", target = "email")
+    @Mapping(source = "username", target = "username")
     Artist toEntity(ArtistInputDTO inputDTO);
 
     @Mapping(source = "fotoUrl", target = "fotoUrl", qualifiedByName = "urlCompleta")
     @Mapping(source = "genres", target = "genres")
+    @Mapping(source = "name", target = "name")
+    @Mapping(source = "surname", target = "surname")
     ArtistOutputDTO toOutputDTO(Artist entity);
 
     @Mapping(target = "id", ignore = true)
@@ -35,6 +39,9 @@ public interface ArtistMapper {
     @Mapping(target = "socialMediaLinks", ignore = true)
     @Mapping(target = "fotoUrl", ignore = true)
     @Mapping(source = "genreIds", target = "genres")
+    @Mapping(source = "email", target = "email")
+    @Mapping(source = "username", target = "username")
+    @Mapping(target = "password", ignore = true)
     void updateFromDTO(ArtistInputDTO inputDTO, @MappingTarget Artist entity);
 
     default List<Genre> map(List<Long> genreIds) {
