@@ -7,10 +7,12 @@ import com.msd.atlantis_fest.service.ArtistService;
 import com.msd.atlantis_fest.service.ConcertService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/artistas")
@@ -42,6 +44,12 @@ public class ArtistController {
         return artist != null ? ResponseEntity.ok(artist) : ResponseEntity.notFound().build();
     }
 
+    @PostMapping("/{id}/foto")
+    public ResponseEntity<Void> actualizarFoto(@PathVariable Long id, @RequestParam("file") MultipartFile file) {
+        artistService.updateArtistPhoto(id, file);
+        return ResponseEntity.ok().build();
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarArtista(@PathVariable Long id) {
         boolean eliminado = artistService.eliminar(id);
@@ -52,4 +60,6 @@ public class ArtistController {
     public ResponseEntity<Page<ConcertOutputDto>> obtenerConciertosPorArtista(@PathVariable Long artistId, Pageable pageable) {
         return ResponseEntity.ok(concertService.obtenerConciertosPorArtista(artistId, pageable));
     }
+
+
 }
