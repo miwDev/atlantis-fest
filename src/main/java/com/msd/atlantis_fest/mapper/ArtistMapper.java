@@ -21,8 +21,9 @@ public interface ArtistMapper {
     @Mapping(source = "genreIds", target = "genres")
     Artist toEntity(ArtistInputDTO inputDTO);
 
+    @Mapping(target = "fotoUrl", expression = "java(mapFotoUrl(artista.getFoto()))")
     @Mapping(source = "genres", target = "genres")
-    ArtistOutputDTO toOutputDTO(Artist entity);
+    ArtistOutputDTO toOutputDTO(Artist artista);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
@@ -52,5 +53,9 @@ public interface ArtistMapper {
         return genres.stream()
                 .map(Genre::getNombre)
                 .collect(Collectors.toList());
+    }
+
+    default String mapFotoUrl(String nombreArchivo) {
+        return (nombreArchivo == null) ? null : "http://localhost:8080/uploads/" + nombreArchivo;
     }
 }
