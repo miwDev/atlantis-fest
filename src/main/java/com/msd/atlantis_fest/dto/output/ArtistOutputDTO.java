@@ -11,5 +11,6 @@ public class ArtistOutputDTO {
     private String username;
     private String artistName;
     private String biography;
+    private String fotoUrl;
     private List<String> genres;
 }
