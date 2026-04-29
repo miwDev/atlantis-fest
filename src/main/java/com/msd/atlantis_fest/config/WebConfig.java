@@ -13,6 +13,8 @@ public class WebConfig implements WebMvcConfigurer {
 
         registry.addResourceHandler("/uploads/**")
                 .addResourceLocations("file:uploads/");
+    }
+
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**") // Aplica a todos los endpoints
                 .allowedOrigins("http://localhost:5173", "http://localhost:5174") // Permite estos orígenes
@@ -20,4 +22,5 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedHeaders("*") // Permite todas las cabeceras
                 .allowCredentials(true); // Permite el envío de cookies y credenciales
     }
+
 }

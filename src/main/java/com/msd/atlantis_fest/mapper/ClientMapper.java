@@ -19,6 +19,8 @@ public interface ClientMapper {
     @Mapping(target = "purchases", ignore = true)
     @Mapping(target = "reviews", ignore = true)
     @Mapping(source = "favoriteGenreIds", target = "favoriteGenres")
+    @Mapping(source = "email", target = "email")
+    @Mapping(source = "username", target = "username")
     Client toEntity(ClientInputDTO inputDTO);
 
     @Mapping(source = "favoriteGenres", target = "favoriteGenres")
@@ -29,28 +31,23 @@ public interface ClientMapper {
     @Mapping(target = "role", ignore = true)
     @Mapping(target = "purchases", ignore = true)
     @Mapping(target = "reviews", ignore = true)
+    @Mapping(target = "password", ignore = true)
     @Mapping(source = "favoriteGenreIds", target = "favoriteGenres")
+    @Mapping(source = "email", target = "email")
+    @Mapping(source = "username", target = "username")
     void updateFromDTO(ClientInputDTO inputDTO, @MappingTarget Client entity);
 
     default List<Genre> map(List<Long> genreIds) {
-        if (genreIds == null) {
-            return null;
-        }
-        return genreIds.stream()
-                .map(id -> {
-                    Genre genre = new Genre();
-                    genre.setId(id);
-                    return genre;
-                })
-                .collect(Collectors.toList());
+        if (genreIds == null) return null;
+        return genreIds.stream().map(id -> {
+            Genre genre = new Genre();
+            genre.setId(id);
+            return genre;
+        }).collect(Collectors.toList());
     }
 
     default List<String> mapGenres(List<Genre> genres) {
-        if (genres == null) {
-            return null;
-        }
-        return genres.stream()
-                .map(Genre::getNombre)
-                .collect(Collectors.toList());
+        if (genres == null) return null;
+        return genres.stream().map(Genre::getNombre).collect(Collectors.toList());
     }
 }

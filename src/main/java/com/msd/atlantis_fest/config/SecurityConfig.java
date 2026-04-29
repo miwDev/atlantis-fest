@@ -33,7 +33,7 @@ public class SecurityConfig {
                         .requestMatchers("/authorizations/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/clientes", "/artistas", "/foodtrucks", "/staff").permitAll()
                         .requestMatchers("/uploads/**").permitAll()
-                        .requestMatchers("/api/artistas/**").permitAll()
+                        .requestMatchers("/artistas/**").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))

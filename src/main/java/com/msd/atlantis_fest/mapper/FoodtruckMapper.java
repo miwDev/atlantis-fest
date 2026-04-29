@@ -16,6 +16,8 @@ public interface FoodtruckMapper {
     @Mapping(target = "estaAbierto", ignore = true)
     @Mapping(target = "latitudActual", ignore = true)
     @Mapping(target = "longitudActual", ignore = true)
+    @Mapping(source = "email", target = "email")
+    @Mapping(source = "username", target = "username")
     Foodtruck toEntity(FoodtruckInputDTO inputDTO);
 
     @Mapping(source = "zone.nombre", target = "zoneNombre")
@@ -28,5 +30,8 @@ public interface FoodtruckMapper {
     @Mapping(target = "estaAbierto", ignore = true)
     @Mapping(target = "latitudActual", ignore = true)
     @Mapping(target = "longitudActual", ignore = true)
+    @Mapping(target = "password", ignore = true)
+    @Mapping(source = "email", target = "email")
+    @Mapping(source = "username", target = "username")
     void updateFromDTO(FoodtruckInputDTO inputDTO, @MappingTarget Foodtruck entity);
 }
