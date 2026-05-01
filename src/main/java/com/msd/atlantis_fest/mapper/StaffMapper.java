@@ -13,6 +13,8 @@ public interface StaffMapper {
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "role", ignore = true)
     @Mapping(target = "shifts", ignore = true)
+    @Mapping(source = "email", target = "email")
+    @Mapping(source = "username", target = "username")
     Staff toEntity(StaffInputDTO inputDTO);
 
     StaffOutputDTO toOutputDTO(Staff entity);
@@ -21,5 +23,8 @@ public interface StaffMapper {
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "role", ignore = true)
     @Mapping(target = "shifts", ignore = true)
+    @Mapping(target = "password", ignore = true)
+    @Mapping(source = "email", target = "email")
+    @Mapping(source = "username", target = "username")
     void updateFromDTO(StaffInputDTO inputDTO, @MappingTarget Staff entity);
 }

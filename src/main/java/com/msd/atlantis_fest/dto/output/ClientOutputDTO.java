@@ -11,6 +11,7 @@ public class ClientOutputDTO {
     private String email;
     private String username;
     private String nombre;
+    private String apellidos;
     private String dni;
     private LocalDate fechaNacimiento;
     private List<String> favoriteGenres;

@@ -37,3 +37,7 @@ build/
 
 ###Db data ###
 data/
+
+### uploads ###
+
+uploads/

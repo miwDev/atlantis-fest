@@ -31,6 +31,9 @@ public class Artist extends User {
     @Lob
     private String biography;
 
+    @Column(name = "foto_url")
+    private String fotoUrl;
+
     @Builder.Default
     @OneToMany(mappedBy = "artist", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Concert> concerts = new ArrayList<>();

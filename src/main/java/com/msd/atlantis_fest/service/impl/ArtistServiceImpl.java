@@ -12,6 +12,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -20,6 +28,8 @@ public class ArtistServiceImpl implements ArtistService {
     private final ArtistRepository artistRepository;
     private final ArtistMapper artistMapper;
     private final PasswordEncoder passwordEncoder;
+
+    private final Path rootLocation = Paths.get("uploads");
 
     @Override
     public Page<ArtistOutputDTO> obtenerTodos(Pageable pageable) {
@@ -55,12 +65,57 @@ public class ArtistServiceImpl implements ArtistService {
     }
 
     @Override
-    public boolean eliminar(Long id) {
-        boolean eliminado = false;
-        if (artistRepository.existsById(id)) {
-            artistRepository.deleteById(id);
-            eliminado = true;
+    public void updateArtistPhoto(Long id, MultipartFile file) {
+
+        try { // creamos uploads si no existe
+            Files.createDirectories(rootLocation);
+        } catch (IOException e) {
+            throw new RuntimeException("No se pudo inicializar la carpeta de almacenamiento", e);
         }
+
+        if (file.isEmpty()) {
+            throw new RuntimeException("El archivo está vacío");
+        }
+
+        Artist artist = artistRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Artista no encontrado con ID: " + id));
+
+        try {
+            String originalFilename = file.getOriginalFilename();
+            String extension = originalFilename != null ? originalFilename.substring(originalFilename.lastIndexOf(".")) : ".jpg";
+            String newFileName = UUID.randomUUID().toString() + extension;
+
+            if (artist.getFotoUrl() != null) {
+                Path oldFilePath = rootLocation.resolve(artist.getFotoUrl());
+                Files.deleteIfExists(oldFilePath);
+            }
+
+            Path destinationFile = rootLocation.resolve(Paths.get(newFileName)).normalize().toAbsolutePath();
+            Files.copy(file.getInputStream(), destinationFile, StandardCopyOption.REPLACE_EXISTING);
+
+            artist.setFotoUrl(newFileName);
+            artistRepository.save(artist);
+
+        } catch (IOException e) {
+            throw new RuntimeException("Error al procesar el archivo: " + e.getMessage());
+        }
+
+    }
+
+    @Override
+    public boolean eliminar(Long id) throws IOException {
+        boolean eliminado = false;
+
+        Artist artistDb = artistRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Artista no encontrado con id: " + id));
+
+        if (artistDb.getFotoUrl() != null) {
+            Path oldFilePath = rootLocation.resolve(artistDb.getFotoUrl());
+            Files.deleteIfExists(oldFilePath);
+        }
+        artistRepository.deleteById(id);
+        eliminado = true;
+
         return eliminado;
     }
 }
