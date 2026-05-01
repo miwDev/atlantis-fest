@@ -19,8 +19,9 @@ import java.util.List;
 public class Client extends User {
 
     @Column(nullable = false, length = 100)
-    @NotBlank
     private String nombre;
+
+    private String apellidos;
 
     @Column(unique = true, length = 9)
     private String dni;

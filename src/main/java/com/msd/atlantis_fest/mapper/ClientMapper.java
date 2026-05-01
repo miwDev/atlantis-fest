@@ -24,6 +24,8 @@ public interface ClientMapper {
     Client toEntity(ClientInputDTO inputDTO);
 
     @Mapping(source = "favoriteGenres", target = "favoriteGenres")
+    @Mapping(source = "nombre", target = "nombre")
+    @Mapping(source = "apellidos", target = "apellidos")
     ClientOutputDTO toOutputDTO(Client entity);
 
     @Mapping(target = "id", ignore = true)
@@ -31,10 +33,10 @@ public interface ClientMapper {
     @Mapping(target = "role", ignore = true)
     @Mapping(target = "purchases", ignore = true)
     @Mapping(target = "reviews", ignore = true)
-    @Mapping(target = "password", ignore = true)
     @Mapping(source = "favoriteGenreIds", target = "favoriteGenres")
     @Mapping(source = "email", target = "email")
     @Mapping(source = "username", target = "username")
+    @Mapping(target = "password", ignore = true)
     void updateFromDTO(ClientInputDTO inputDTO, @MappingTarget Client entity);
 
     default List<Genre> map(List<Long> genreIds) {
