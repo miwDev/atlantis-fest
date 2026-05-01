@@ -103,12 +103,19 @@ public class ArtistServiceImpl implements ArtistService {
     }
 
     @Override
-    public boolean eliminar(Long id) {
+    public boolean eliminar(Long id) throws IOException {
         boolean eliminado = false;
-        if (artistRepository.existsById(id)) {
-            artistRepository.deleteById(id);
-            eliminado = true;
+
+        Artist artistDb = artistRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Artista no encontrado con id: " + id));
+
+        if (artistDb.getFotoUrl() != null) {
+            Path oldFilePath = rootLocation.resolve(artistDb.getFotoUrl());
+            Files.deleteIfExists(oldFilePath);
         }
+        artistRepository.deleteById(id);
+        eliminado = true;
+
         return eliminado;
     }
 }

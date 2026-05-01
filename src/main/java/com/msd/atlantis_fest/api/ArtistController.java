@@ -14,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+
 @RestController
 @RequestMapping("/artistas")
 @RequiredArgsConstructor
@@ -52,8 +54,13 @@ public class ArtistController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarArtista(@PathVariable Long id) {
-        boolean eliminado = artistService.eliminar(id);
-        return eliminado ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
+        try {
+            boolean eliminado = artistService.eliminar(id);
+            return eliminado ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     @GetMapping("/{artistId}/conciertos")
