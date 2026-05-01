@@ -9,6 +9,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/foodtrucks")
@@ -37,6 +40,28 @@ public class FoodtruckController {
     public ResponseEntity<FoodtruckOutputDTO> actualizarFoodtruck(@PathVariable Long id, @Valid @RequestBody FoodtruckInputDTO inputDTO) {
         FoodtruckOutputDTO foodtruck = foodtruckService.actualizar(id, inputDTO);
         return foodtruck != null ? ResponseEntity.ok(foodtruck) : ResponseEntity.notFound().build();
+    }
+
+    @PostMapping("/{id}/foto")
+    public ResponseEntity<Void> actualizarFoto(@PathVariable Long id, @RequestParam("file") MultipartFile file) {
+        foodtruckService.updateFoodtruckPhoto(id, file);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/{id}/menu")
+    public ResponseEntity<Void> actualizarMenuPdf(@PathVariable Long id, @RequestParam("file") MultipartFile file) {
+        foodtruckService.updateFoodtruckMenuPdf(id, file);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{id}/menu")
+    public ResponseEntity<byte[]> obtenerMenuPdf(@PathVariable Long id) {
+        byte[] pdfBytes = foodtruckService.getFoodtruckMenuPdf(id);
+
+        return ResponseEntity.ok()
+                .header(org.springframework.http.HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"menu_" + id + ".pdf\"")
+                .header(org.springframework.http.HttpHeaders.CONTENT_TYPE, "application/pdf")
+                .body(pdfBytes);
     }
 
     @DeleteMapping("/{id}")
