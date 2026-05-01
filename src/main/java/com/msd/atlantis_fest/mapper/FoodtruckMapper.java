@@ -6,9 +6,11 @@ import com.msd.atlantis_fest.entity.Foodtruck;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.Named;
 
 @Mapper(componentModel = "spring")
 public interface FoodtruckMapper {
+
     @Mapping(source = "zoneId", target = "zone.id")
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
@@ -16,11 +18,14 @@ public interface FoodtruckMapper {
     @Mapping(target = "estaAbierto", ignore = true)
     @Mapping(target = "latitudActual", ignore = true)
     @Mapping(target = "longitudActual", ignore = true)
+    @Mapping(target = "menuPdf", ignore = true)
+    @Mapping(target = "imagenPortadaUrl", ignore = true)
     @Mapping(source = "email", target = "email")
     @Mapping(source = "username", target = "username")
     Foodtruck toEntity(FoodtruckInputDTO inputDTO);
 
     @Mapping(source = "zone.nombre", target = "zoneNombre")
+    @Mapping(source = "imagenPortadaUrl", target = "imagenPortadaUrl", qualifiedByName = "urlCompleta")
     FoodtruckOutputDTO toOutputDTO(Foodtruck entity);
 
     @Mapping(source = "zoneId", target = "zone.id")
@@ -31,7 +36,16 @@ public interface FoodtruckMapper {
     @Mapping(target = "latitudActual", ignore = true)
     @Mapping(target = "longitudActual", ignore = true)
     @Mapping(target = "password", ignore = true)
+    @Mapping(target = "menuPdf", ignore = true)
+    @Mapping(target = "imagenPortadaUrl", ignore = true)
     @Mapping(source = "email", target = "email")
     @Mapping(source = "username", target = "username")
     void updateFromDTO(FoodtruckInputDTO inputDTO, @MappingTarget Foodtruck entity);
+
+    @Named("urlCompleta")
+    default String mapFotoUrl(String nombreArchivo) {
+        return (nombreArchivo == null || nombreArchivo.isEmpty())
+                ? null
+                : "http://localhost:8080/uploads/" + nombreArchivo;
+    }
 }

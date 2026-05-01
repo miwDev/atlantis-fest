@@ -7,15 +7,20 @@ import lombok.experimental.SuperBuilder;
 
 @Entity
 @Table(name = "foodtruck")
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor @SuperBuilder
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@SuperBuilder
 public class Foodtruck extends User {
 
     @Column(nullable = false, length = 100)
     @NotBlank(message = "El nombre del foodtruck es obligatorio")
     private String nombre;
 
-    @Column(name = "menu_pdf_url", length = 255)
-    private String menuPdfUrl;
+    @Column(name = "menu_pdf", columnDefinition = "LONGBLOB")
+    @Lob
+    private byte[] menuPdf;
 
     @Column(name = "tipo_comida", length = 100)
     @NotBlank(message = "El tipo de comida es obligatorio")

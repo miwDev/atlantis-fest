@@ -8,7 +8,6 @@ public class FoodtruckOutputDTO {
     private String email;
     private String username;
     private String nombre;
-    private String menuPdfUrl;
     private String tipoComida;
     private String imagenPortadaUrl;
     private Boolean estaAbierto;

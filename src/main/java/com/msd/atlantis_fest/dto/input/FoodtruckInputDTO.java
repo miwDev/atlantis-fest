@@ -23,16 +23,10 @@ public class FoodtruckInputDTO {
     @NotBlank(message = "El nombre no puede estar vacío")
     @Size(max = 100, message = "El nombre no puede tener más de 100 caracteres")
     private String nombre;
-
-    @Size(max = 255, message = "La URL del menú en PDF no puede tener más de 255 caracteres")
-    private String menuPdfUrl;
-
+    
     @NotBlank(message = "El tipo de comida no puede estar vacío")
     @Size(max = 100, message = "El tipo de comida no puede tener más de 100 caracteres")
     private String tipoComida;
-
-    @Size(max = 255, message = "La URL de la imagen de portada no puede tener más de 255 caracteres")
-    private String imagenPortadaUrl;
 
     private Long zoneId;
 }
