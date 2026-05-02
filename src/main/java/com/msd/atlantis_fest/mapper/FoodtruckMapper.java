@@ -26,6 +26,7 @@ public interface FoodtruckMapper {
 
     @Mapping(source = "zone.nombre", target = "zoneNombre")
     @Mapping(source = "imagenPortadaUrl", target = "imagenPortadaUrl", qualifiedByName = "urlCompleta")
+    @Mapping(target = "tieneMenuPdf", expression = "java(entity.getMenuPdf() != null && entity.getMenuPdf().length > 0)")
     FoodtruckOutputDTO toOutputDTO(Foodtruck entity);
 
     @Mapping(source = "zoneId", target = "zone.id")

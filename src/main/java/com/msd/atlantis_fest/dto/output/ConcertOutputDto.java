@@ -11,7 +11,6 @@ public class ConcertOutputDto {
     private LocalDate fecha;
     private LocalTime horaInicio;
     private LocalTime horaFin;
-    private Integer duracionEstimada;
     private String artistName;
     private String zoneName;
 }

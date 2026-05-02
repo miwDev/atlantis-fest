@@ -14,4 +14,5 @@ public class FoodtruckOutputDTO {
     private Double latitudActual;
     private Double longitudActual;
     private String zoneNombre;
+    private Boolean tieneMenuPdf;
 }
