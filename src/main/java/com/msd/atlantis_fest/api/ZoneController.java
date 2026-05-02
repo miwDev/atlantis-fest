@@ -2,6 +2,7 @@ package com.msd.atlantis_fest.api;
 
 import com.msd.atlantis_fest.dto.input.ZoneInputDTO;
 import com.msd.atlantis_fest.dto.output.ZoneOutputDTO;
+import com.msd.atlantis_fest.enums.ZoneEnum;
 import com.msd.atlantis_fest.service.ZoneService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Arrays;
+import java.util.List;
 
 @RestController
 @RequestMapping("/zonas")
@@ -48,5 +52,10 @@ public class ZoneController {
     @GetMapping("/festival/{festivalId}")
     public ResponseEntity<Page<ZoneOutputDTO>> obtenerZonasPorFestival(@PathVariable Long festivalId, Pageable pageable) {
         return ResponseEntity.ok(zoneService.obtenerZonasPorFestival(festivalId, pageable));
+    }
+
+    @GetMapping("/tipos")
+    public ResponseEntity<List<ZoneEnum>> obtenerTiposDeZona() {
+        return ResponseEntity.ok(Arrays.asList(ZoneEnum.values()));
     }
 }

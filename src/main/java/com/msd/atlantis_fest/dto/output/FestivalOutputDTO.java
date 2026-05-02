@@ -11,5 +11,4 @@ public class FestivalOutputDTO {
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
     private String ubicacionGeneral;
-    private String logoUrl;
 }

@@ -32,7 +32,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/authorizations/**").permitAll()
                         .requestMatchers("/clientes", "/artistas", "/foodtrucks", "/staff").permitAll()
-                        .requestMatchers("/clientes/**", "/artistas/**", "/foodtrucks/**", "/staffs/**").permitAll()
+                        .requestMatchers("/clientes/**", "/artistas/**",
+                                "/foodtrucks/**", "/staffs/**", "/staff/**",
+                                "/festivales/**", "/zonas/**", "/auth/**",
+                                "/generos/**", "/turnos/**", "/reviews/**", "/resenas/**",
+                                "/conciertos/**", "/facturas/**", "/compras/**",
+                                "/tipos-ticket/**", "/redes-sociales/**").permitAll()
                         .requestMatchers("/uploads/**").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session

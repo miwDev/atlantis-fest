@@ -1,5 +1,6 @@
 package com.msd.atlantis_fest.dto.input;
 
+import com.msd.atlantis_fest.enums.TicketEnum;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -8,9 +9,9 @@ import lombok.Data;
 
 @Data
 public class TicketTypeInputDTO {
+
     @NotBlank(message = "El tipo no puede estar vacío")
-    @Size(max = 100, message = "El tipo no puede tener más de 100 caracteres")
-    private String tipo;
+    private TicketEnum tipo;
 
     @NotNull(message = "El precio base no puede ser nulo")
     @Min(value = 0, message = "El precio base no puede ser negativo")

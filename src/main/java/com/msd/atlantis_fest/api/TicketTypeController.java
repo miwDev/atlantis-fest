@@ -2,6 +2,7 @@ package com.msd.atlantis_fest.api;
 
 import com.msd.atlantis_fest.dto.input.TicketTypeInputDTO;
 import com.msd.atlantis_fest.dto.output.TicketTypeOutputDTO;
+import com.msd.atlantis_fest.dto.output.TicketTypeSalesOutputDTO;
 import com.msd.atlantis_fest.service.TicketTypeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -43,5 +44,15 @@ public class TicketTypeController {
     public ResponseEntity<Void> eliminarTipoTicket(@PathVariable Long id) {
         boolean eliminado = ticketTypeService.eliminar(id);
         return eliminado ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/festival/{festivalId}")
+    public ResponseEntity<Page<TicketTypeOutputDTO>> obtenerTiposTicketPorFestival(@PathVariable Long festivalId, Pageable pageable) {
+        return ResponseEntity.ok(ticketTypeService.obtenerTiposTicketPorFestival(festivalId, pageable));
+    }
+
+    @GetMapping("/{id}/ventas")
+    public ResponseEntity<TicketTypeSalesOutputDTO> obtenerVentasPorTicketId(@PathVariable Long id) {
+        return ResponseEntity.ok(ticketTypeService.obtenerVentasPorTicketId(id));
     }
 }
