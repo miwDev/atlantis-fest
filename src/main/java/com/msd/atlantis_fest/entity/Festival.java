@@ -35,9 +35,6 @@ public class Festival {
     @Column(name = "ubicacion_general", length = 200)
     private String ubicacionGeneral;
 
-    @Column(name = "logo_url", length = 255)
-    private String logoUrl;
-
     @Builder.Default
     @OneToMany(mappedBy = "festival", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Zone> zones = new ArrayList<>();

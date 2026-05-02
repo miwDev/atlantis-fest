@@ -1,5 +1,6 @@
 package com.msd.atlantis_fest.entity;
 
+import com.msd.atlantis_fest.enums.TicketEnum;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
@@ -18,9 +19,9 @@ public class TicketType {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 100)
-    @NotBlank
-    private String tipo;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 50)
+    private TicketEnum tipo;
 
     @Column(name = "precio_base", nullable = false)
     private Double precioBase;
