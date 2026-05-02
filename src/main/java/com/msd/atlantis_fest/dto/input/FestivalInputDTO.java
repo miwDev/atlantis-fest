@@ -25,6 +25,4 @@ public class FestivalInputDTO {
     @Size(max = 200, message = "La ubicación general no puede tener más de 200 caracteres")
     private String ubicacionGeneral;
 
-    @Size(max = 255, message = "La URL del logo no puede tener más de 255 caracteres")
-    private String logoUrl;
 }

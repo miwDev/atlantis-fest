@@ -2,9 +2,11 @@ package com.msd.atlantis_fest.service.impl;
 
 import com.msd.atlantis_fest.dto.input.TicketTypeInputDTO;
 import com.msd.atlantis_fest.dto.output.TicketTypeOutputDTO;
+import com.msd.atlantis_fest.dto.output.TicketTypeSalesOutputDTO;
 import com.msd.atlantis_fest.entity.TicketType;
 import com.msd.atlantis_fest.exception.custom.ResourceNotFoundException;
 import com.msd.atlantis_fest.mapper.TicketTypeMapper;
+import com.msd.atlantis_fest.repository.PurchaseRepository;
 import com.msd.atlantis_fest.repository.TicketTypeRepository;
 import com.msd.atlantis_fest.service.TicketTypeService;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 public class TicketTypeServiceImpl implements TicketTypeService {
 
     private final TicketTypeRepository ticketTypeRepository;
+    private final PurchaseRepository purchaseRepository;
     private final TicketTypeMapper ticketTypeMapper;
 
     @Override
@@ -56,5 +59,34 @@ public class TicketTypeServiceImpl implements TicketTypeService {
             eliminado = true;
         }
         return eliminado;
+    }
+
+    @Override
+    public Page<TicketTypeOutputDTO> obtenerTiposTicketPorFestival(Long festivalId, Pageable pageable) {
+        return ticketTypeRepository.findByFestivalId(festivalId, pageable)
+                .map(ticketTypeMapper::toOutputDTO);
+    }
+
+    @Override
+    public TicketTypeSalesOutputDTO obtenerVentasPorTicketId(Long id) {
+        TicketType ticketType = ticketTypeRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Tipo de ticket no encontrado con id: " + id));
+
+        long vendidos = purchaseRepository.countByTicketTypeId(id);
+        long disponibles = Math.max(0, ticketType.getMaxDisponible() - vendidos);
+        
+        Double ingresoTotal = purchaseRepository.sumPrecioFinalByTicketTypeId(id);
+        if (ingresoTotal == null) {
+            ingresoTotal = 0.0;
+        }
+
+        return TicketTypeSalesOutputDTO.builder()
+                .ticketTypeId(ticketType.getId())
+                .tipo(ticketType.getTipo().name())
+                .precioBase(ticketType.getPrecioBase())
+                .vendidos(vendidos)
+                .disponibles(disponibles)
+                .ingresoTotal(ingresoTotal)
+                .build();
     }
 }
