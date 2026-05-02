@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -43,6 +44,7 @@ public class FoodtruckServiceImpl implements FoodtruckService {
     }
 
     @Override
+    @Transactional
     public FoodtruckOutputDTO crear(FoodtruckInputDTO inputDTO) {
         Foodtruck foodtruck = foodtruckMapper.toEntity(inputDTO);
         foodtruck.setPassword(passwordEncoder.encode(inputDTO.getPassword()));
@@ -54,9 +56,17 @@ public class FoodtruckServiceImpl implements FoodtruckService {
         return foodtruckRepository.findById(id)
                 .map(foodtruck -> {
                     foodtruckMapper.updateFromDTO(inputDTO, foodtruck);
+                    
                     if (inputDTO.getPassword() != null && !inputDTO.getPassword().isEmpty()) {
                         foodtruck.setPassword(passwordEncoder.encode(inputDTO.getPassword()));
                     }
+                    
+                    // Si el frontend envía tieneMenuPdf explícitamente a false, significa que el usuario
+                    // ha decidido eliminar el menú en el formulario de edición.
+                    if (Boolean.FALSE.equals(inputDTO.getTieneMenuPdf())) {
+                        foodtruck.setMenuPdf(null);
+                    }
+
                     return foodtruckMapper.toOutputDTO(foodtruckRepository.save(foodtruck));
                 })
                 .orElseThrow(() -> new ResourceNotFoundException("Foodtruck no encontrado con id: " + id));

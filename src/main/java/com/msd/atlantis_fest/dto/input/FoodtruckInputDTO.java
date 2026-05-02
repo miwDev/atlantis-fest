@@ -28,4 +28,6 @@ public class FoodtruckInputDTO {
     private String tipoComida;
 
     private Long zoneId;
+
+    private Boolean tieneMenuPdf;
 }

@@ -29,9 +29,6 @@ public class Concert {
     @Column(name = "hora_fin", nullable = false)
     private LocalTime horaFin;
 
-    @Column(name = "duracion_estimada")
-    private Integer duracionEstimada;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "artista_id", nullable = false)
     private Artist artist;

@@ -19,8 +19,6 @@ public class ConcertInputDTO {
     @NotNull(message = "La hora de fin no puede ser nula")
     private LocalTime horaFin;
 
-    private Integer duracionEstimada;
-
     @NotNull(message = "El ID del artista no puede ser nulo")
     private Long artistId;
 
