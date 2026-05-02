@@ -1,7 +1,9 @@
 package com.msd.atlantis_fest.entity;
 
+import com.msd.atlantis_fest.enums.ZoneEnum;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -28,8 +30,10 @@ public class Zone {
     @Column(length = 500)
     private String descripcion;
 
-    @Column(length = 50)
-    private String tipo;
+    @Enumerated(EnumType.STRING)
+    @Column(length = 50, nullable = false)
+    @NotNull
+    private ZoneEnum tipo;
 
     private Double latitud;
 

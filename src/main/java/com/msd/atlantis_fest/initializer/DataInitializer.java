@@ -2,6 +2,7 @@ package com.msd.atlantis_fest.initializer;
 
 import com.msd.atlantis_fest.entity.*;
 import com.msd.atlantis_fest.enums.TicketEnum;
+import com.msd.atlantis_fest.enums.ZoneEnum;
 import com.msd.atlantis_fest.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
@@ -56,10 +57,10 @@ public class DataInitializer implements CommandLineRunner {
             festivalRepository.save(festival);
 
             // Zonas
-            Zone mainStage = Zone.builder().nombre("Main Stage").descripcion("Escenario Principal").tipo("Escenario").festival(festival).build();
-            Zone electronicZone = Zone.builder().nombre("Electronic Zone").descripcion("Carpa Electrónica").tipo("Escenario").festival(festival).build();
-            Zone foodCourt = Zone.builder().nombre("Food Court").descripcion("Zona de Comidas y Bebidas").tipo("Comida").festival(festival).build();
-            Zone chillOut = Zone.builder().nombre("Chill Out Area").descripcion("Zona de descanso").tipo("Descanso").festival(festival).build();
+            Zone mainStage = Zone.builder().nombre("Main Stage").descripcion("Escenario Principal").tipo(ZoneEnum.CONCIERTO).festival(festival).build();
+            Zone electronicZone = Zone.builder().nombre("Electronic Zone").descripcion("Carpa Electrónica").tipo(ZoneEnum.CONCIERTO).festival(festival).build();
+            Zone foodCourt = Zone.builder().nombre("Food Court").descripcion("Zona de Comidas y Bebidas").tipo(ZoneEnum.FOODTRUCK).festival(festival).build();
+            Zone chillOut = Zone.builder().nombre("Chill Out Area").descripcion("Zona de descanso").tipo(ZoneEnum.DESCANSO).festival(festival).build();
             zoneRepository.saveAll(Arrays.asList(mainStage, electronicZone, foodCourt, chillOut));
 
             // Géneros
