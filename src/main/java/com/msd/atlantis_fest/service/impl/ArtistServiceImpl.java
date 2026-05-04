@@ -6,6 +6,7 @@ import com.msd.atlantis_fest.entity.Artist;
 import com.msd.atlantis_fest.exception.custom.ResourceNotFoundException;
 import com.msd.atlantis_fest.mapper.ArtistMapper;
 import com.msd.atlantis_fest.repository.ArtistRepository;
+import com.msd.atlantis_fest.repository.RoleRepository;
 import com.msd.atlantis_fest.service.ArtistService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -26,6 +27,7 @@ import java.util.UUID;
 public class ArtistServiceImpl implements ArtistService {
 
     private final ArtistRepository artistRepository;
+    private final RoleRepository roleRepository;
     private final ArtistMapper artistMapper;
     private final PasswordEncoder passwordEncoder;
 
@@ -48,6 +50,7 @@ public class ArtistServiceImpl implements ArtistService {
     public ArtistOutputDTO crear(ArtistInputDTO inputDTO) {
         Artist artist = artistMapper.toEntity(inputDTO);
         artist.setPassword(passwordEncoder.encode(inputDTO.getPassword()));
+        artist.setRole(roleRepository.findByName("ARTIST").orElseThrow(() -> new ResourceNotFoundException("Rol ARTIST no encontrado")));
         return artistMapper.toOutputDTO(artistRepository.save(artist));
     }
 
@@ -67,7 +70,7 @@ public class ArtistServiceImpl implements ArtistService {
     @Override
     public void updateArtistPhoto(Long id, MultipartFile file) {
 
-        try { // creamos uploads si no existe
+        try {
             Files.createDirectories(rootLocation);
         } catch (IOException e) {
             throw new RuntimeException("No se pudo inicializar la carpeta de almacenamiento", e);
