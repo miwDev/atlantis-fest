@@ -55,7 +55,6 @@ public class PurchaseServiceImpl implements PurchaseService {
 
         double precioFinal = ticketType.getPrecioBase() - (inputDTO.getDescuentoAplicado() != null ? inputDTO.getDescuentoAplicado() : 0.0);
 
-        // 1. Crear la compra y guardarla para obtener un ID
         Purchase purchase = Purchase.builder()
                 .client(client)
                 .ticketType(ticketType)
@@ -65,16 +64,14 @@ public class PurchaseServiceImpl implements PurchaseService {
                 .build();
         Purchase savedPurchase = purchaseRepository.save(purchase);
 
-        // 2. Crear y guardar el pago, asociándolo a la compra ya guardada
         Payment payment = Payment.builder()
                 .monto(precioFinal)
-                .metodoPago("CARD") // Asumimos un método de pago
+                .metodoPago("CARD")
                 .estado("COMPLETED")
                 .purchase(savedPurchase)
                 .build();
         Payment savedPayment = paymentRepository.save(payment);
 
-        // 3. Crear la factura
         Invoice invoice = Invoice.builder()
                 .numeroFactura(UUID.randomUUID().toString())
                 .fechaEmision(LocalDateTime.now())
@@ -83,7 +80,6 @@ public class PurchaseServiceImpl implements PurchaseService {
                 .build();
         invoiceRepository.save(invoice);
 
-        // 4. Actualizar el stock de tickets
         ticketType.setMaxDisponible(ticketType.getMaxDisponible() - 1);
         ticketTypeRepository.save(ticketType);
 
@@ -92,15 +88,17 @@ public class PurchaseServiceImpl implements PurchaseService {
 
     @Override
     public PurchaseOutputDTO actualizar(Long id, PurchaseInputDTO inputDTO) {
-        // La lógica de negocio de una compra no suele permitir su actualización.
-        // Se podría cancelar y crear una nueva. De momento, se deja sin implementación.
         throw new UnsupportedOperationException("La actualización de una compra no está permitida.");
     }
 
     @Override
     public boolean eliminar(Long id) {
-        // La lógica de negocio de una compra no suele permitir su eliminación directa.
-        // Se debería implementar una cancelación que, por ejemplo, devuelva el stock.
         throw new UnsupportedOperationException("La eliminación de una compra no está permitida.");
+    }
+
+    @Override
+    public Page<PurchaseOutputDTO> obtenerPorCliente(Long clientId, Pageable pageable) {
+        return purchaseRepository.findByClientId(clientId, pageable)
+                .map(purchaseMapper::toOutputDTO);
     }
 }

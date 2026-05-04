@@ -5,6 +5,7 @@ import com.msd.atlantis_fest.dto.output.StaffOutputDTO;
 import com.msd.atlantis_fest.entity.Staff;
 import com.msd.atlantis_fest.exception.custom.ResourceNotFoundException;
 import com.msd.atlantis_fest.mapper.StaffMapper;
+import com.msd.atlantis_fest.repository.RoleRepository;
 import com.msd.atlantis_fest.repository.StaffRepository;
 import com.msd.atlantis_fest.service.StaffService;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 public class StaffServiceImpl implements StaffService {
 
     private final StaffRepository staffRepository;
+    private final RoleRepository roleRepository;
     private final StaffMapper staffMapper;
     private final PasswordEncoder passwordEncoder;
 
@@ -38,6 +40,7 @@ public class StaffServiceImpl implements StaffService {
     public StaffOutputDTO crear(StaffInputDTO inputDTO) {
         Staff staff = staffMapper.toEntity(inputDTO);
         staff.setPassword(passwordEncoder.encode(inputDTO.getPassword()));
+        staff.setRole(roleRepository.findByName("STAFF").orElseThrow(() -> new ResourceNotFoundException("Rol STAFF no encontrado")));
         return staffMapper.toOutputDTO(staffRepository.save(staff));
     }
 

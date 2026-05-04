@@ -6,6 +6,7 @@ import com.msd.atlantis_fest.entity.Client;
 import com.msd.atlantis_fest.exception.custom.ResourceNotFoundException;
 import com.msd.atlantis_fest.mapper.ClientMapper;
 import com.msd.atlantis_fest.repository.ClientRepository;
+import com.msd.atlantis_fest.repository.RoleRepository;
 import com.msd.atlantis_fest.service.ClientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 public class ClientServiceImpl implements ClientService {
 
     private final ClientRepository clientRepository;
+    private final RoleRepository roleRepository;
     private final ClientMapper clientMapper;
     private final PasswordEncoder passwordEncoder;
 
@@ -38,6 +40,7 @@ public class ClientServiceImpl implements ClientService {
     public ClientOutputDTO crear(ClientInputDTO inputDTO) {
         Client client = clientMapper.toEntity(inputDTO);
         client.setPassword(passwordEncoder.encode(inputDTO.getPassword()));
+        client.setRole(roleRepository.findByName("CLIENT").orElseThrow(() -> new ResourceNotFoundException("Rol CLIENT no encontrado")));
         return clientMapper.toOutputDTO(clientRepository.save(client));
     }
 

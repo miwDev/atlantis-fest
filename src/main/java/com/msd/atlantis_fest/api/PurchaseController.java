@@ -44,4 +44,9 @@ public class PurchaseController {
         boolean eliminado = purchaseService.eliminar(id);
         return eliminado ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
+
+    @GetMapping("/cliente/{clientId}")
+    public ResponseEntity<Page<PurchaseOutputDTO>> obtenerComprasPorCliente(@PathVariable Long clientId, Pageable pageable) {
+        return ResponseEntity.ok(purchaseService.obtenerPorCliente(clientId, pageable));
+    }
 }

@@ -6,6 +6,7 @@ import com.msd.atlantis_fest.entity.Foodtruck;
 import com.msd.atlantis_fest.exception.custom.ResourceNotFoundException;
 import com.msd.atlantis_fest.mapper.FoodtruckMapper;
 import com.msd.atlantis_fest.repository.FoodtruckRepository;
+import com.msd.atlantis_fest.repository.RoleRepository;
 import com.msd.atlantis_fest.service.FoodtruckService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -25,6 +26,7 @@ import java.nio.file.Paths;
 public class FoodtruckServiceImpl implements FoodtruckService {
 
     private final FoodtruckRepository foodtruckRepository;
+    private final RoleRepository roleRepository;
     private final FoodtruckMapper foodtruckMapper;
     private final PasswordEncoder passwordEncoder;
 
@@ -48,6 +50,7 @@ public class FoodtruckServiceImpl implements FoodtruckService {
     public FoodtruckOutputDTO crear(FoodtruckInputDTO inputDTO) {
         Foodtruck foodtruck = foodtruckMapper.toEntity(inputDTO);
         foodtruck.setPassword(passwordEncoder.encode(inputDTO.getPassword()));
+        foodtruck.setRole(roleRepository.findByName("FOODTRUCK").orElseThrow(() -> new ResourceNotFoundException("Rol FOODTRUCK no encontrado")));
         return foodtruckMapper.toOutputDTO(foodtruckRepository.save(foodtruck));
     }
 
@@ -61,8 +64,6 @@ public class FoodtruckServiceImpl implements FoodtruckService {
                         foodtruck.setPassword(passwordEncoder.encode(inputDTO.getPassword()));
                     }
                     
-                    // Si el frontend envía tieneMenuPdf explícitamente a false, significa que el usuario
-                    // ha decidido eliminar el menú en el formulario de edición.
                     if (Boolean.FALSE.equals(inputDTO.getTieneMenuPdf())) {
                         foodtruck.setMenuPdf(null);
                     }
