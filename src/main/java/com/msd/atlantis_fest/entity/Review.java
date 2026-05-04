@@ -18,7 +18,7 @@ public class Review {
     private Long id;
 
     @Column(name = "target_type", nullable = false, length = 50)
-    private String targetType; // Ej: "ARTIST" o "FOODTRUCK"
+    private String targetType;
 
     @Column(name = "target_id", nullable = false)
     private Long targetId;

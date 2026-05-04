@@ -56,21 +56,18 @@ public class DataInitializer implements CommandLineRunner {
                     .build();
             festivalRepository.save(festival);
 
-            // Zonas
             Zone mainStage = Zone.builder().nombre("Main Stage").descripcion("Escenario Principal").tipo(ZoneEnum.CONCIERTO).festival(festival).build();
             Zone electronicZone = Zone.builder().nombre("Electronic Zone").descripcion("Carpa Electrónica").tipo(ZoneEnum.CONCIERTO).festival(festival).build();
             Zone foodCourt = Zone.builder().nombre("Food Court").descripcion("Zona de Comidas y Bebidas").tipo(ZoneEnum.FOODTRUCK).festival(festival).build();
             Zone chillOut = Zone.builder().nombre("Chill Out Area").descripcion("Zona de descanso").tipo(ZoneEnum.DESCANSO).festival(festival).build();
             zoneRepository.saveAll(Arrays.asList(mainStage, electronicZone, foodCourt, chillOut));
 
-            // Géneros
             Genre rock = Genre.builder().nombre("Rock").build();
             Genre pop = Genre.builder().nombre("Pop").build();
             Genre electronic = Genre.builder().nombre("Electronic").build();
             Genre indie = Genre.builder().nombre("Indie").build();
             genreRepository.saveAll(Arrays.asList(rock, pop, electronic, indie));
 
-            // Artistas
             Artist artist1 = Artist.builder()
                     .username("artist1")
                     .email("artist1@atlantisfest.com")
@@ -96,7 +93,6 @@ public class DataInitializer implements CommandLineRunner {
                     .build();
             artistRepository.saveAll(Arrays.asList(artist1, artist2));
 
-            // Foodtrucks
             Foodtruck foodtruck1 = Foodtruck.builder()
                     .username("foodtruck1")
                     .email("foodtruck1@atlantisfest.com")
@@ -120,7 +116,6 @@ public class DataInitializer implements CommandLineRunner {
                     .build();
             foodtruckRepository.saveAll(Arrays.asList(foodtruck1, foodtruck2));
 
-            // Conciertos
             Concert concert1 = Concert.builder()
                     .artist(artist1)
                     .zone(mainStage)
@@ -138,7 +133,6 @@ public class DataInitializer implements CommandLineRunner {
                     .build();
             concertRepository.saveAll(Arrays.asList(concert1, concert2));
 
-            // Clientes
             Client client1 = Client.builder()
                     .username("client1")
                     .email("client1@atlantisfest.com")
@@ -150,7 +144,6 @@ public class DataInitializer implements CommandLineRunner {
                     .build();
             clientRepository.save(client1);
 
-            // Tipos de Tickets
             TicketType general = TicketType.builder()
                     .tipo(TicketEnum.GENERAL)
                     .precioBase(50.00)

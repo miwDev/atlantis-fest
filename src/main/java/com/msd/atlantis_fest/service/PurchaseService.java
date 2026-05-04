@@ -11,4 +11,5 @@ public interface PurchaseService {
     PurchaseOutputDTO crear(PurchaseInputDTO inputDTO);
     PurchaseOutputDTO actualizar(Long id, PurchaseInputDTO inputDTO);
     boolean eliminar(Long id);
+    Page<PurchaseOutputDTO> obtenerPorCliente(Long clientId, Pageable pageable);
 }

@@ -16,11 +16,11 @@ public class WebConfig implements WebMvcConfigurer {
     }
 
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**") // Aplica a todos los endpoints
-                .allowedOrigins("http://localhost:5173", "http://localhost:5174") // Permite estos orígenes
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS") // Permite estos métodos HTTP
-                .allowedHeaders("*") // Permite todas las cabeceras
-                .allowCredentials(true); // Permite el envío de cookies y credenciales
+        registry.addMapping("/**")
+                .allowedOrigins("http://localhost:5173", "http://localhost:5174")
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
+                .allowedHeaders("*")
+                .allowCredentials(true);
     }
 
 }
