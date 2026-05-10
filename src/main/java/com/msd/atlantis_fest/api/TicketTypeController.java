@@ -25,8 +25,7 @@ public class TicketTypeController {
 
     @GetMapping("/{id}")
     public ResponseEntity<TicketTypeOutputDTO> obtenerTipoTicketPorId(@PathVariable Long id) {
-        TicketTypeOutputDTO ticketType = ticketTypeService.obtenerPorId(id);
-        return ticketType != null ? ResponseEntity.ok(ticketType) : ResponseEntity.notFound().build();
+        return ResponseEntity.ok(ticketTypeService.obtenerPorId(id));
     }
 
     @PostMapping
@@ -36,8 +35,7 @@ public class TicketTypeController {
 
     @PutMapping("/{id}")
     public ResponseEntity<TicketTypeOutputDTO> actualizarTipoTicket(@PathVariable Long id, @Valid @RequestBody TicketTypeInputDTO inputDTO) {
-        TicketTypeOutputDTO ticketType = ticketTypeService.actualizar(id, inputDTO);
-        return ticketType != null ? ResponseEntity.ok(ticketType) : ResponseEntity.notFound().build();
+        return ResponseEntity.ok(ticketTypeService.actualizar(id, inputDTO));
     }
 
     @DeleteMapping("/{id}")

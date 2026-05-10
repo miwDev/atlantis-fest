@@ -24,8 +24,7 @@ public class ClientController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ClientOutputDTO> obtenerClientePorId(@PathVariable Long id) {
-        ClientOutputDTO client = clientService.obtenerPorId(id);
-        return client != null ? ResponseEntity.ok(client) : ResponseEntity.notFound().build();
+        return ResponseEntity.ok(clientService.obtenerPorId(id));
     }
 
     @PostMapping
@@ -35,8 +34,7 @@ public class ClientController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ClientOutputDTO> actualizarCliente(@PathVariable Long id, @Valid @RequestBody ClientInputDTO inputDTO) {
-        ClientOutputDTO client = clientService.actualizar(id, inputDTO);
-        return client != null ? ResponseEntity.ok(client) : ResponseEntity.notFound().build();
+        return ResponseEntity.ok(clientService.actualizar(id, inputDTO));
     }
 
     @DeleteMapping("/{id}")

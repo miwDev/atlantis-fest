@@ -24,8 +24,7 @@ public class SocialMediaController {
 
     @GetMapping("/{id}")
     public ResponseEntity<SocialMediaOutputDTO> obtenerRedSocialPorId(@PathVariable Long id) {
-        SocialMediaOutputDTO socialMedia = socialMediaService.obtenerPorId(id);
-        return socialMedia != null ? ResponseEntity.ok(socialMedia) : ResponseEntity.notFound().build();
+        return ResponseEntity.ok(socialMediaService.obtenerPorId(id));
     }
 
     @PostMapping
@@ -35,8 +34,7 @@ public class SocialMediaController {
 
     @PutMapping("/{id}")
     public ResponseEntity<SocialMediaOutputDTO> actualizarRedSocial(@PathVariable Long id, @Valid @RequestBody SocialMediaInputDTO inputDTO) {
-        SocialMediaOutputDTO socialMedia = socialMediaService.actualizar(id, inputDTO);
-        return socialMedia != null ? ResponseEntity.ok(socialMedia) : ResponseEntity.notFound().build();
+        return ResponseEntity.ok(socialMediaService.actualizar(id, inputDTO));
     }
 
     @DeleteMapping("/{id}")

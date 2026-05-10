@@ -24,8 +24,7 @@ public class InvoiceController {
 
     @GetMapping("/{id}")
     public ResponseEntity<InvoiceOutputDTO> obtenerFacturaPorId(@PathVariable Long id) {
-        InvoiceOutputDTO invoice = invoiceService.obtenerPorId(id);
-        return invoice != null ? ResponseEntity.ok(invoice) : ResponseEntity.notFound().build();
+        return ResponseEntity.ok(invoiceService.obtenerPorId(id));
     }
 
     @PostMapping
@@ -35,8 +34,7 @@ public class InvoiceController {
 
     @PutMapping("/{id}")
     public ResponseEntity<InvoiceOutputDTO> actualizarFactura(@PathVariable Long id, @Valid @RequestBody InvoiceInputDTO inputDTO) {
-        InvoiceOutputDTO invoice = invoiceService.actualizar(id, inputDTO);
-        return invoice != null ? ResponseEntity.ok(invoice) : ResponseEntity.notFound().build();
+        return ResponseEntity.ok(invoiceService.actualizar(id, inputDTO));
     }
 
     @DeleteMapping("/{id}")

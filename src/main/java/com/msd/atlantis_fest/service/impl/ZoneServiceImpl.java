@@ -63,4 +63,11 @@ public class ZoneServiceImpl implements ZoneService {
         return zoneRepository.findByFestivalId(festivalId, pageable)
                 .map(zoneMapper::toOutputDTO);
     }
+
+    @Override
+    public ZoneOutputDTO obtenerPorNombre(String nombre) {
+        return zoneRepository.findByNombre(nombre)
+                .map(zoneMapper::toOutputDTO)
+                .orElseThrow(() -> new ResourceNotFoundException("Zona no encontrada con nombre: " + nombre));
+    }
 }

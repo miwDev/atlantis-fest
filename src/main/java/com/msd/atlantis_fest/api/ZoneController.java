@@ -32,6 +32,11 @@ public class ZoneController {
         return zone != null ? ResponseEntity.ok(zone) : ResponseEntity.notFound().build();
     }
 
+    @GetMapping("/nombre/{nombre}")
+    public ResponseEntity<ZoneOutputDTO> obtenerZonaPorNombre(@PathVariable String nombre) {
+        return ResponseEntity.ok(zoneService.obtenerPorNombre(nombre));
+    }
+
     @PostMapping
     public ResponseEntity<ZoneOutputDTO> crearZona(@Valid @RequestBody ZoneInputDTO inputDTO) {
         return ResponseEntity.status(201).body(zoneService.crear(inputDTO));

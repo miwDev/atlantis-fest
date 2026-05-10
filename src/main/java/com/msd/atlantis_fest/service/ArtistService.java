@@ -10,14 +10,9 @@ import java.io.IOException;
 
 public interface ArtistService {
     Page<ArtistOutputDTO> obtenerTodos(Pageable pageable);
-
     ArtistOutputDTO obtenerPorId(Long id);
-
     ArtistOutputDTO crear(ArtistInputDTO inputDTO);
-
     ArtistOutputDTO actualizar(Long id, ArtistInputDTO inputDTO);
-
     void updateArtistPhoto(Long id, MultipartFile file);
-
     boolean eliminar(Long id) throws IOException;
 }

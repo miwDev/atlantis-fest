@@ -1,9 +1,11 @@
 package com.msd.atlantis_fest.enums;
 
 public enum ZoneEnum {
-    CONCIERTO,
+    ESCENARIO,
     FOODTRUCK,
-    DESCANSO,
     BAÑOS,
-    VIP
+    VIP,
+    ENTRADA,
+    GENERAL,
+    DESCANSO
 }
