@@ -30,4 +30,6 @@ public class FoodtruckInputDTO {
     private Long zoneId;
 
     private Boolean tieneMenuPdf;
+
+    private Boolean estaAbierto;
 }
