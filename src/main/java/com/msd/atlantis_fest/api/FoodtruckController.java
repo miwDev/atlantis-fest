@@ -11,8 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-
 @RestController
 @RequestMapping("/foodtrucks")
 @RequiredArgsConstructor
@@ -27,8 +25,7 @@ public class FoodtruckController {
 
     @GetMapping("/{id}")
     public ResponseEntity<FoodtruckOutputDTO> obtenerFoodtruckPorId(@PathVariable Long id) {
-        FoodtruckOutputDTO foodtruck = foodtruckService.obtenerPorId(id);
-        return foodtruck != null ? ResponseEntity.ok(foodtruck) : ResponseEntity.notFound().build();
+        return ResponseEntity.ok(foodtruckService.obtenerPorId(id));
     }
 
     @PostMapping
@@ -38,8 +35,7 @@ public class FoodtruckController {
 
     @PutMapping("/{id}")
     public ResponseEntity<FoodtruckOutputDTO> actualizarFoodtruck(@PathVariable Long id, @Valid @RequestBody FoodtruckInputDTO inputDTO) {
-        FoodtruckOutputDTO foodtruck = foodtruckService.actualizar(id, inputDTO);
-        return foodtruck != null ? ResponseEntity.ok(foodtruck) : ResponseEntity.notFound().build();
+        return ResponseEntity.ok(foodtruckService.actualizar(id, inputDTO));
     }
 
     @PostMapping("/{id}/foto")

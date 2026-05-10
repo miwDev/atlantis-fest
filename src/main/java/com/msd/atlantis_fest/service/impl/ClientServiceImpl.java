@@ -59,11 +59,10 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public boolean eliminar(Long id) {
-        boolean eliminado = false;
         if (clientRepository.existsById(id)) {
             clientRepository.deleteById(id);
-            eliminado = true;
+            return true;
         }
-        return eliminado;
+        return false;
     }
 }

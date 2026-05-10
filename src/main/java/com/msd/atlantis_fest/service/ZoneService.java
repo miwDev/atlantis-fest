@@ -12,4 +12,5 @@ public interface ZoneService {
     ZoneOutputDTO actualizar(Long id, ZoneInputDTO inputDTO);
     boolean eliminar(Long id);
     Page<ZoneOutputDTO> obtenerZonasPorFestival(Long festivalId, Pageable pageable);
+    ZoneOutputDTO obtenerPorNombre(String nombre);
 }

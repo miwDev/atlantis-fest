@@ -24,8 +24,7 @@ public class ConcertController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ConcertOutputDto> obtenerConciertoPorId(@PathVariable Long id) {
-        ConcertOutputDto concert = concertService.obtenerPorId(id);
-        return concert != null ? ResponseEntity.ok(concert) : ResponseEntity.notFound().build();
+        return ResponseEntity.ok(concertService.obtenerPorId(id));
     }
 
     @PostMapping
@@ -35,8 +34,7 @@ public class ConcertController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ConcertOutputDto> actualizarConcierto(@PathVariable Long id, @Valid @RequestBody ConcertInputDTO inputDTO) {
-        ConcertOutputDto concert = concertService.actualizar(id, inputDTO);
-        return concert != null ? ResponseEntity.ok(concert) : ResponseEntity.notFound().build();
+        return ResponseEntity.ok(concertService.actualizar(id, inputDTO));
     }
 
     @DeleteMapping("/{id}")

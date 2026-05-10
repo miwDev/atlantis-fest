@@ -10,7 +10,7 @@ import lombok.Data;
 @Data
 public class TicketTypeInputDTO {
 
-    @NotBlank(message = "El tipo no puede estar vacío")
+    @NotNull(message = "El tipo no puede estar vacío")
     private TicketEnum tipo;
 
     @NotNull(message = "El precio base no puede ser nulo")

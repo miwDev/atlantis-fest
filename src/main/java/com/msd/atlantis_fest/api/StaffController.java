@@ -24,8 +24,7 @@ public class StaffController {
 
     @GetMapping("/{id}")
     public ResponseEntity<StaffOutputDTO> obtenerStaffPorId(@PathVariable Long id) {
-        StaffOutputDTO staff = staffService.obtenerPorId(id);
-        return staff != null ? ResponseEntity.ok(staff) : ResponseEntity.notFound().build();
+        return ResponseEntity.ok(staffService.obtenerPorId(id));
     }
 
     @PostMapping
@@ -35,8 +34,7 @@ public class StaffController {
 
     @PutMapping("/{id}")
     public ResponseEntity<StaffOutputDTO> actualizarStaff(@PathVariable Long id, @Valid @RequestBody StaffInputDTO inputDTO) {
-        StaffOutputDTO staff = staffService.actualizar(id, inputDTO);
-        return staff != null ? ResponseEntity.ok(staff) : ResponseEntity.notFound().build();
+        return ResponseEntity.ok(staffService.actualizar(id, inputDTO));
     }
 
     @DeleteMapping("/{id}")

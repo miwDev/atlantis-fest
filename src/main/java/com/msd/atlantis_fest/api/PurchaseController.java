@@ -24,8 +24,7 @@ public class PurchaseController {
 
     @GetMapping("/{id}")
     public ResponseEntity<PurchaseOutputDTO> obtenerCompraPorId(@PathVariable Long id) {
-        PurchaseOutputDTO purchase = purchaseService.obtenerPorId(id);
-        return purchase != null ? ResponseEntity.ok(purchase) : ResponseEntity.notFound().build();
+        return ResponseEntity.ok(purchaseService.obtenerPorId(id));
     }
 
     @PostMapping
@@ -35,8 +34,7 @@ public class PurchaseController {
 
     @PutMapping("/{id}")
     public ResponseEntity<PurchaseOutputDTO> actualizarCompra(@PathVariable Long id, @Valid @RequestBody PurchaseInputDTO inputDTO) {
-        PurchaseOutputDTO purchase = purchaseService.actualizar(id, inputDTO);
-        return purchase != null ? ResponseEntity.ok(purchase) : ResponseEntity.notFound().build();
+        return ResponseEntity.ok(purchaseService.actualizar(id, inputDTO));
     }
 
     @DeleteMapping("/{id}")

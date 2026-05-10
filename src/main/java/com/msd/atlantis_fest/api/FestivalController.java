@@ -24,8 +24,7 @@ public class FestivalController {
 
     @GetMapping("/{id}")
     public ResponseEntity<FestivalOutputDTO> obtenerFestivalPorId(@PathVariable Long id) {
-        FestivalOutputDTO festival = festivalService.obtenerPorId(id);
-        return festival != null ? ResponseEntity.ok(festival) : ResponseEntity.notFound().build();
+        return ResponseEntity.ok(festivalService.obtenerPorId(id));
     }
 
     @PostMapping
@@ -35,8 +34,7 @@ public class FestivalController {
 
     @PutMapping("/{id}")
     public ResponseEntity<FestivalOutputDTO> actualizarFestival(@PathVariable Long id, @Valid @RequestBody FestivalInputDTO inputDTO) {
-        FestivalOutputDTO festival = festivalService.actualizar(id, inputDTO);
-        return festival != null ? ResponseEntity.ok(festival) : ResponseEntity.notFound().build();
+        return ResponseEntity.ok(festivalService.actualizar(id, inputDTO));
     }
 
     @DeleteMapping("/{id}")
