@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.List;
@@ -29,6 +30,8 @@ public class DataInitializer implements CommandLineRunner {
     private final ConcertRepository concertRepository;
     private final ClientRepository clientRepository;
     private final TicketTypeRepository ticketTypeRepository;
+    private final StaffRepository staffRepository;
+    private final ShiftRepository shiftRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -37,6 +40,7 @@ public class DataInitializer implements CommandLineRunner {
             Role artistRole = roleRepository.save(Role.builder().name("ARTIST").build());
             Role foodtruckRole = roleRepository.save(Role.builder().name("FOODTRUCK").build());
             Role clientRole = roleRepository.save(Role.builder().name("CLIENT").build());
+            Role staffRole = roleRepository.save(Role.builder().name("STAFF").build());
 
             User adminUser = User.builder()
                     .username("admin")
@@ -144,6 +148,31 @@ public class DataInitializer implements CommandLineRunner {
                     .build();
             clientRepository.save(client1);
 
+            Staff staff1 = Staff.builder()
+                    .username("staff1")
+                    .email("staff1@atlantisfest.com")
+                    .password(passwordEncoder.encode("12345"))
+                    .role(roleRepository.findByName("STAFF").orElse(null))
+                    .build();
+            staffRepository.save(staff1);
+
+            Shift shift1 = Shift.builder()
+                    .horaInicio(LocalDateTime.of(festival.getFechaInicio(), LocalTime.of(18, 0)))
+                    .horaFin(LocalDateTime.of(festival.getFechaInicio(), LocalTime.of(23, 0)))
+                    .descripcionTarea("Control de accesos en el escenario principal")
+                    .staff(staff1)
+                    .zone(mainStage)
+                    .build();
+
+            Shift shift2 = Shift.builder()
+                    .horaInicio(LocalDateTime.of(festival.getFechaInicio().plusDays(1), LocalTime.of(12, 0)))
+                    .horaFin(LocalDateTime.of(festival.getFechaInicio().plusDays(1), LocalTime.of(18, 0)))
+                    .descripcionTarea("Supervisión y limpieza en zona de foodtrucks")
+                    .staff(staff1)
+                    .zone(foodCourt)
+                    .build();
+            shiftRepository.saveAll(Arrays.asList(shift1, shift2));
+
             TicketType general = TicketType.builder()
                     .tipo(TicketEnum.GENERAL)
                     .precioBase(50.00)
@@ -177,6 +206,7 @@ public class DataInitializer implements CommandLineRunner {
             System.out.println("- foodtruck1 (FOODTRUCK) - " + foodtruck1.getNombre());
             System.out.println("- foodtruck2 (FOODTRUCK) - " + foodtruck2.getNombre());
             System.out.println("- client1 (CLIENT)");
+            System.out.println("- staff1 (STAFF) - Asignado a 2 turnos");
             System.out.println("==================================================================");
         }
     }
