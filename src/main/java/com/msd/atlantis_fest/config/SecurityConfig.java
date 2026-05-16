@@ -9,6 +9,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -28,18 +29,38 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .cors(Customizer.withDefaults())
-                .csrf(csrf -> csrf.disable())
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/authorizations/**").permitAll()
-                        .requestMatchers("/clientes", "/artistas", "/foodtrucks", "/staff").permitAll()
-                        .requestMatchers("/clientes/**", "/artistas/**",
-                                "/foodtrucks/**", "/staffs/**", "/staff/**",
-                                "/festivales/**", "/zonas/**", "/auth/**",
-                                "/generos/**", "/turnos/**", "/reviews/**", "/resenas/**",
-                                "/conciertos/**", "/facturas/**", "/compras/**",
-                                "/tipos-ticket/**", "/redes-sociales/**").permitAll()
-                        .requestMatchers("/uploads/**").permitAll()
-                        .anyRequest().authenticated())
+                        // ENDPOINTS PÚBLICOS
+                        .requestMatchers("/authorizations/**", "/uploads/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, 
+                                "/artistas/**", 
+                                "/conciertos/**", 
+                                "/festivales/**", 
+                                "/foodtrucks/**", 
+                                "/generos/**", 
+                                "/zonas/**",
+                                "/tipos-ticket/**",
+                                "/reviews/**"
+                        ).permitAll()
+
+                        // ENDPOINTS DE CLIENTE
+                        .requestMatchers("/compras/**").hasRole("CLIENT")
+                        .requestMatchers(HttpMethod.POST, "/reviews").hasRole("CLIENT")
+                        .requestMatchers(HttpMethod.PUT, "/reviews/**").hasRole("CLIENT")
+                        .requestMatchers(HttpMethod.DELETE, "/reviews/**").hasRole("CLIENT")
+
+                        // ENDPOINTS DE ARTISTA (para su propio perfil)
+                        .requestMatchers(HttpMethod.PUT, "/artistas/{id}").hasAnyRole("ARTIST", "ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/artistas/{id}/foto").hasAnyRole("ARTIST", "ADMIN")
+
+                        // ENDPOINTS DE FOODTRUCK (para su propio perfil)
+                        .requestMatchers(HttpMethod.PUT, "/foodtrucks/{id}").hasAnyRole("FOODTRUCK", "ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/foodtrucks/{id}/foto", "/foodtrucks/{id}/menu").hasAnyRole("FOODTRUCK", "ADMIN")
+                        
+                        // CUALQUIER OTRA COSA REQUIERE SER ADMIN
+                        .anyRequest().hasRole("ADMIN")
+                )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)

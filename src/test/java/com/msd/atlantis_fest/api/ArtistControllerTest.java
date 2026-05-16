@@ -1,9 +1,9 @@
 package com.msd.atlantis_fest.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.msd.atlantis_fest.dto.input.ConcertInputDTO;
-import com.msd.atlantis_fest.dto.output.ConcertOutputDto;
+import com.msd.atlantis_fest.dto.input.ArtistInputDTO;
+import com.msd.atlantis_fest.dto.output.ArtistOutputDTO;
+import com.msd.atlantis_fest.service.ArtistService;
 import com.msd.atlantis_fest.service.ConcertService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,8 +20,6 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.Collections;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -31,26 +29,26 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(MockitoExtension.class)
-class ConcertControllerTest {
+class ArtistControllerTest {
 
     private MockMvc mockMvc;
+
+    @Mock
+    private ArtistService artistService;
 
     @Mock
     private ConcertService concertService;
 
     @InjectMocks
-    private ConcertController concertController;
+    private ArtistController artistController;
 
-    private ObjectMapper objectMapper;
+    private ObjectMapper objectMapper = new ObjectMapper();
 
-    private ConcertInputDTO concertInputDTO;
-    private ConcertOutputDto concertOutputDTO;
+    private ArtistInputDTO artistInputDTO;
+    private ArtistOutputDTO artistOutputDTO;
 
     @BeforeEach
     void setUp() {
-        objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
-
         var pageModule = new com.fasterxml.jackson.databind.module.SimpleModule();
         pageModule.addSerializer(Page.class, new com.fasterxml.jackson.databind.JsonSerializer<Page>() {
             @Override
@@ -65,63 +63,56 @@ class ConcertControllerTest {
         });
         objectMapper.registerModule(pageModule);
 
-        mockMvc = MockMvcBuilders.standaloneSetup(concertController)
+        mockMvc = MockMvcBuilders.standaloneSetup(artistController)
                 .setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver())
                 .setMessageConverters(new MappingJackson2HttpMessageConverter(objectMapper))
                 .build();
 
-        concertInputDTO = new ConcertInputDTO();
-        concertInputDTO.setArtistId(1L);
-        concertInputDTO.setZoneId(1L);
-        concertInputDTO.setFecha(LocalDate.of(2099, 12, 31));
-        concertInputDTO.setHoraInicio(LocalTime.of(20, 0));
-        concertInputDTO.setHoraFin(LocalTime.of(22, 0));
+        artistInputDTO = new ArtistInputDTO();
+        artistInputDTO.setUsername("testuser");
+        artistInputDTO.setPassword("password123");
+        artistInputDTO.setEmail("test@test.com");
+        artistInputDTO.setName("Test");
+        artistInputDTO.setSurname("User");
+        artistInputDTO.setArtistName("Test Artist");
 
-        concertOutputDTO = new ConcertOutputDto();
-        concertOutputDTO.setId(1L);
-        concertOutputDTO.setArtistName("Artist Name");
+        artistOutputDTO = new ArtistOutputDTO();
+        artistOutputDTO.setId(1L);
+        artistOutputDTO.setUsername("testuser");
+        artistOutputDTO.setArtistName("Test Artist");
     }
 
     @Test
-    void obtenerConciertos_Devuelve200() throws Exception {
-        Page<ConcertOutputDto> page = new PageImpl<>(Collections.singletonList(concertOutputDTO));
-        when(concertService.obtenerTodos(any(Pageable.class))).thenReturn(page);
+    void obtenerArtistas_Devuelve200() throws Exception {
+        Page<ArtistOutputDTO> page = new PageImpl<>(Collections.singletonList(artistOutputDTO));
+        when(artistService.obtenerTodos(any(Pageable.class))).thenReturn(page);
 
-        mockMvc.perform(get("/conciertos")
+        mockMvc.perform(get("/artistas")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content[0].id").value(1L));
     }
 
     @Test
-    void obtenerConciertoPorId_Devuelve200() throws Exception {
-        when(concertService.obtenerPorId(eq(1L))).thenReturn(concertOutputDTO);
+    void obtenerArtistaPorId_Devuelve200() throws Exception {
+        when(artistService.obtenerPorId(eq(1L))).thenReturn(artistOutputDTO);
 
-        mockMvc.perform(get("/conciertos/1")
+        mockMvc.perform(get("/artistas/1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1L));
     }
 
     @Test
-    void crearConcierto_Devuelve201() throws Exception {
-        when(concertService.crear(any(ConcertInputDTO.class))).thenReturn(concertOutputDTO);
+    void crearArtista_Devuelve201() throws Exception {
+        when(artistService.crear(any(ArtistInputDTO.class))).thenReturn(artistOutputDTO);
 
-        mockMvc.perform(post("/conciertos")
+        mockMvc.perform(post("/artistas")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(concertInputDTO)))
+                        .content(objectMapper.writeValueAsString(artistInputDTO)))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id").value(1L));
-    }
-
-    @Test
-    void actualizarConcierto_Devuelve200() throws Exception {
-        when(concertService.actualizar(eq(1L), any(ConcertInputDTO.class))).thenReturn(concertOutputDTO);
-
-        mockMvc.perform(put("/conciertos/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(concertInputDTO)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(1L));
+                .andExpect(jsonPath("$.id").value(1L))
+                .andExpect(jsonPath("$.username").value("testuser"))
+                .andExpect(jsonPath("$.artistName").value("Test Artist"));
     }
 }
