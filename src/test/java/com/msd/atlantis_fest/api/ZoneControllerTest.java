@@ -14,7 +14,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -44,17 +46,35 @@ class ZoneControllerTest {
 
     @BeforeEach
     void setUp() {
-        mockMvc = MockMvcBuilders.standaloneSetup(zoneController).build();
+        // Configuración para que MockMvc entienda Pageable y pueda serializar Page
+        var pageModule = new com.fasterxml.jackson.databind.module.SimpleModule();
+        pageModule.addSerializer(Page.class, new com.fasterxml.jackson.databind.JsonSerializer<Page>() {
+            @Override
+            public void serialize(Page value, com.fasterxml.jackson.core.JsonGenerator gen, com.fasterxml.jackson.databind.SerializerProvider serializers) throws java.io.IOException {
+                gen.writeStartObject();
+                gen.writeObjectField("content", value.getContent());
+                gen.writeNumberField("totalElements", value.getTotalElements());
+                gen.writeNumberField("totalPages", value.getTotalPages());
+                gen.writeNumberField("number", value.getNumber());
+                gen.writeEndObject();
+            }
+        });
+        objectMapper.registerModule(pageModule);
+
+        mockMvc = MockMvcBuilders.standaloneSetup(zoneController)
+                .setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver())
+                .setMessageConverters(new MappingJackson2HttpMessageConverter(objectMapper))
+                .build();
 
         zoneInputDTO = new ZoneInputDTO();
         zoneInputDTO.setNombre("Main Stage");
-        zoneInputDTO.setTipo(ZoneEnum.CONCIERTO);
+        zoneInputDTO.setTipo(ZoneEnum.ESCENARIO);
         zoneInputDTO.setFestivalId(1L);
 
         zoneOutputDTO = new ZoneOutputDTO();
         zoneOutputDTO.setId(1L);
         zoneOutputDTO.setNombre("Main Stage");
-        zoneOutputDTO.setTipo(ZoneEnum.CONCIERTO);
+        zoneOutputDTO.setTipo(ZoneEnum.ESCENARIO);
     }
 
     @Test
