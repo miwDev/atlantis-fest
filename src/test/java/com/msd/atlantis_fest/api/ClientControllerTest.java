@@ -1,10 +1,9 @@
 package com.msd.atlantis_fest.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.msd.atlantis_fest.dto.input.ConcertInputDTO;
-import com.msd.atlantis_fest.dto.output.ConcertOutputDto;
-import com.msd.atlantis_fest.service.ConcertService;
+import com.msd.atlantis_fest.dto.input.ClientInputDTO;
+import com.msd.atlantis_fest.dto.output.ClientOutputDTO;
+import com.msd.atlantis_fest.service.ClientService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,8 +19,6 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.Collections;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -31,26 +28,23 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(MockitoExtension.class)
-class ConcertControllerTest {
+class ClientControllerTest {
 
     private MockMvc mockMvc;
 
     @Mock
-    private ConcertService concertService;
+    private ClientService clientService;
 
     @InjectMocks
-    private ConcertController concertController;
+    private ClientController clientController;
 
-    private ObjectMapper objectMapper;
+    private ObjectMapper objectMapper = new ObjectMapper();
 
-    private ConcertInputDTO concertInputDTO;
-    private ConcertOutputDto concertOutputDTO;
+    private ClientInputDTO clientInputDTO;
+    private ClientOutputDTO clientOutputDTO;
 
     @BeforeEach
     void setUp() {
-        objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
-
         var pageModule = new com.fasterxml.jackson.databind.module.SimpleModule();
         pageModule.addSerializer(Page.class, new com.fasterxml.jackson.databind.JsonSerializer<Page>() {
             @Override
@@ -65,63 +59,55 @@ class ConcertControllerTest {
         });
         objectMapper.registerModule(pageModule);
 
-        mockMvc = MockMvcBuilders.standaloneSetup(concertController)
+        mockMvc = MockMvcBuilders.standaloneSetup(clientController)
                 .setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver())
                 .setMessageConverters(new MappingJackson2HttpMessageConverter(objectMapper))
                 .build();
 
-        concertInputDTO = new ConcertInputDTO();
-        concertInputDTO.setArtistId(1L);
-        concertInputDTO.setZoneId(1L);
-        concertInputDTO.setFecha(LocalDate.of(2099, 12, 31));
-        concertInputDTO.setHoraInicio(LocalTime.of(20, 0));
-        concertInputDTO.setHoraFin(LocalTime.of(22, 0));
+        clientInputDTO = new ClientInputDTO();
+        clientInputDTO.setUsername("testclient");
+        clientInputDTO.setPassword("password123");
+        clientInputDTO.setEmail("client@test.com");
+        clientInputDTO.setNombre("Test");
+        clientInputDTO.setApellidos("Client");
 
-        concertOutputDTO = new ConcertOutputDto();
-        concertOutputDTO.setId(1L);
-        concertOutputDTO.setArtistName("Artist Name");
+        clientOutputDTO = new ClientOutputDTO();
+        clientOutputDTO.setId(1L);
+        clientOutputDTO.setUsername("testclient");
+        clientOutputDTO.setNombre("Test");
     }
 
     @Test
-    void obtenerConciertos_Devuelve200() throws Exception {
-        Page<ConcertOutputDto> page = new PageImpl<>(Collections.singletonList(concertOutputDTO));
-        when(concertService.obtenerTodos(any(Pageable.class))).thenReturn(page);
+    void obtenerTodos_Devuelve200() throws Exception {
+        Page<ClientOutputDTO> page = new PageImpl<>(Collections.singletonList(clientOutputDTO));
+        when(clientService.obtenerTodos(any(Pageable.class))).thenReturn(page);
 
-        mockMvc.perform(get("/conciertos")
+        mockMvc.perform(get("/clientes")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content[0].id").value(1L));
     }
 
     @Test
-    void obtenerConciertoPorId_Devuelve200() throws Exception {
-        when(concertService.obtenerPorId(eq(1L))).thenReturn(concertOutputDTO);
+    void crearClienteDevuelve201() throws Exception {
+        when(clientService.crear(any(ClientInputDTO.class))).thenReturn(clientOutputDTO);
 
-        mockMvc.perform(get("/conciertos/1")
+        mockMvc.perform(post("/clientes")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(clientInputDTO)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").value(1L))
+                .andExpect(jsonPath("$.username").value("testclient"));
+    }
+
+    @Test
+    void obtenerClientePorIdDevuelve200() throws Exception {
+        when(clientService.obtenerPorId(eq(1L))).thenReturn(clientOutputDTO);
+
+        mockMvc.perform(get("/clientes/1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(1L));
-    }
-
-    @Test
-    void crearConcierto_Devuelve201() throws Exception {
-        when(concertService.crear(any(ConcertInputDTO.class))).thenReturn(concertOutputDTO);
-
-        mockMvc.perform(post("/conciertos")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(concertInputDTO)))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id").value(1L));
-    }
-
-    @Test
-    void actualizarConcierto_Devuelve200() throws Exception {
-        when(concertService.actualizar(eq(1L), any(ConcertInputDTO.class))).thenReturn(concertOutputDTO);
-
-        mockMvc.perform(put("/conciertos/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(concertInputDTO)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(1L));
+                .andExpect(jsonPath("$.id").value(1L))
+                .andExpect(jsonPath("$.nombre").value("Test"));
     }
 }

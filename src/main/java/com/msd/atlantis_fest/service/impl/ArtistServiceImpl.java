@@ -86,7 +86,7 @@ public class ArtistServiceImpl implements ArtistService {
         try {
             String originalFilename = file.getOriginalFilename();
             String extension = originalFilename != null ? originalFilename.substring(originalFilename.lastIndexOf(".")) : ".jpg";
-            String newFileName = UUID.randomUUID().toString() + extension;
+            String newFileName = UUID.randomUUID() + extension;
 
             if (artist.getFotoUrl() != null) {
                 Path oldFilePath = rootLocation.resolve(artist.getFotoUrl());

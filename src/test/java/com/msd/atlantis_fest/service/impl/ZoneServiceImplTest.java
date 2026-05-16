@@ -46,16 +46,16 @@ class ZoneServiceImplTest {
         zone = new Zone();
         zone.setId(1L);
         zone.setNombre("Main Stage");
-        zone.setTipo(ZoneEnum.CONCIERTO);
+        zone.setTipo(ZoneEnum.ESCENARIO);
 
         zoneInputDTO = new ZoneInputDTO();
         zoneInputDTO.setNombre("Main Stage");
-        zoneInputDTO.setTipo(ZoneEnum.CONCIERTO);
+        zoneInputDTO.setTipo(ZoneEnum.ESCENARIO);
 
         zoneOutputDTO = new ZoneOutputDTO();
         zoneOutputDTO.setId(1L);
         zoneOutputDTO.setNombre("Main Stage");
-        zoneOutputDTO.setTipo(ZoneEnum.CONCIERTO);
+        zoneOutputDTO.setTipo(ZoneEnum.ESCENARIO);
     }
 
     @Test
