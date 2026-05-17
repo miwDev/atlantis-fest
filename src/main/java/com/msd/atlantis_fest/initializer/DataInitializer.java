@@ -62,7 +62,6 @@ public class DataInitializer implements CommandLineRunner {
                     .build();
             festivalRepository.save(festival);
 
-            // Creación de Zonas del Mapa Interactivo con nombres internos homogéneos
             Map<String, String[]> zonesToCreate = new LinkedHashMap<>();
             zonesToCreate.put("escenario-poseidon", new String[]{"Escenario Poseidón", "ESCENARIO"});
             zonesToCreate.put("vip-triton", new String[]{"Zona VIP Tritón", "VIP"});
