@@ -1,4 +1,21 @@
 services:
+  app:
+    build: .
+    container_name: atlantis_app
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      - APP_DB_NAME=${APP_DB_NAME}
+      - APP_DB_USER=${APP_DB_USER}
+      - APP_DB_PASS=${APP_DB_PASS}
+      - JWT_SECRET=${JWT_SECRET}
+      # Cambiamos el host de la BBDD a 'mariadb' que es el nombre del servicio
+      - SPRING_DATASOURCE_URL=jdbc:mariadb://mariadb:3306/${APP_DB_NAME}
+    depends_on:
+      mariadb:
+        condition: service_healthy
+
   mariadb:
     image: 'mariadb:latest'
     container_name: atlantis_db_container
@@ -12,3 +29,17 @@ services:
       - "3306:3306"
     volumes:
       - ./data/db:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mariadb-admin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  frontend:
+    build: ../atlantis-fest-front
+    container_name: atlantis_front
+    restart: always
+    ports:
+      - "3000:80"
+    depends_on:
+      - app
